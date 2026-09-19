@@ -1,0 +1,18 @@
+# 📌 تعليمات مهمة
+
+## بعد فك ضغط الملف:
+
+1. انسخ ملفاتك الحالية (index.html, assets/css, assets/js) إلى هذا المجلد
+2. تأكد من وجود index.html في الجذر
+3. ارفع كل الملفات على GitHub
+4. اربط المشروع بـ Vercel
+
+## الملفات الجاهزة:
+✅ package.json - تبعيات المشروع
+✅ vite.config.js - إعدادات البناء
+✅ vercel.json - إعدادات Vercel
+✅ supabase/schema.sql - مخطط قاعدة البيانات
+✅ services/ - خدمات Supabase الجاهزة
+
+## الخطوات التالية:
+راجع README.md للتفاصيل الكاملة

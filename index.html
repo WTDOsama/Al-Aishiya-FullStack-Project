@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light" data-font-size="medium">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="نظام إدارة طلبة مدرسة العائشية دير البلح — منظومة مدرسية عربية متكاملة لإدارة الطلبة والحضور والأداء وتوزيع البسكويت">
+  <title>نظام إدارة طلبة مدرسة العائشية دير البلح</title>
+  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><circle cx="48" cy="48" r="46" fill="%230b7a5c"/><path d="M48 30c-8.5 0-15.8 2.4-21.5 6.2V54c5.7-3.8 13-6.2 21.5-6.2s15.8 2.4 21.5 6.2V36.2C63.8 32.4 56.5 30 48 30z" fill="white"/><circle cx="48" cy="48" r="46" fill="none" stroke="%23d9a521" stroke-width="3"/></svg>'>
+  <link rel="preload" href="assets/fonts/cairo-400-arabic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body>
+
+  <!-- شاشة التحميل الأولية -->
+  <div id="app">
+    <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.1rem">
+      <div style="width:88px;height:88px">
+        <svg viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="48" cy="48" r="46" fill="#0b7a5c"/>
+          <circle cx="48" cy="48" r="46" fill="none" stroke="#d9a521" stroke-width="2.5"/>
+          <path d="M48 33c-8.5 0-15.8 2.4-21.5 6.2V57c5.7-3.8 13-6.2 21.5-6.2s15.8 2.4 21.5 6.2V39.2C63.8 35.4 56.5 33 48 33z" fill="#fdfcf7"/>
+          <path d="M48 20.5c2.6 3.6 4.4 7.3 5.1 11h-10.2c.7-3.7 2.5-7.4 5.1-11z" fill="#d9a521"/>
+        </svg>
+      </div>
+      <div style="font-weight:800;font-size:1.2rem">نظام إدارة طلبة مدرسة العائشية دير البلح</div>
+      <div style="display:flex;align-items:center;gap:.7rem;color:#5f736c">
+        <div class="spinner"></div>
+        <span style="font-weight:700">جارٍ تحميل النظام…</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="dialog-root"></div>
+  <div id="toast-root"></div>
+  <div id="print-root"></div>
+
+  <noscript>
+    <div style="padding:3rem;text-align:center;font-weight:800">
+      نظام إدارة طلبة مدرسة العائشية دير البلح يتطلب تفعيل JavaScript في المتصفح.
+    </div>
+  </noscript>
+
+  <!-- المكتبات المحلية -->
+  <script src="assets/js/vendor/chart.umd.min.js"></script>
+  <script src="assets/js/vendor/qrcode.min.js"></script>
+  <script src="assets/js/vendor/jsQR.js"></script>
+  <script src="assets/js/vendor/xlsx.full.min.js"></script>
+
+  <!-- نواة النظام -->
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/qrutil.js"></script>
+  <script src="assets/js/charts.js"></script>
+  <script src="assets/js/crudFactory.js"></script>
+
+  <!-- الصفحات -->
+  <script src="assets/js/views/login.js"></script>
+  <script src="assets/js/views/dashboard.js"></script>
+  <script src="assets/js/views/students.js"></script>
+  <script src="assets/js/views/studentProfile.js"></script>
+  <script src="assets/js/views/guardians.js"></script>
+  <script src="assets/js/views/classes.js"></script>
+  <script src="assets/js/views/attendance.js"></script>
+  <script src="assets/js/views/performance.js"></script>
+  <script src="assets/js/views/biscuits.js"></script>
+  <script src="assets/js/views/school.js"></script>
+  <script src="assets/js/views/workers.js"></script>
+  <script src="assets/js/views/qrReader.js"></script>
+  <script src="assets/js/views/importExport.js"></script>
+  <script src="assets/js/views/reports.js"></script>
+  <script src="assets/js/views/notifications.js"></script>
+  <script src="assets/js/views/activity.js"></script>
+  <script src="assets/js/views/social.js"></script>
+  <script src="assets/js/views/settings.js"></script>
+
+  <!-- التهيئة -->
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
