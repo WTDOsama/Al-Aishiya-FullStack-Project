@@ -13,7 +13,7 @@ body{background:linear-gradient(135deg,#0d9488,#0f766e);min-height:100vh}
 .logo-circle{width:110px;height:110px;background:#0d9488;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 25px;border:5px solid #fbbf24}
 .logo-circle svg{width:65px;height:65px;fill:#fff}
 .auth-box h1{text-align:center;color:#0d9488;margin-bottom:8px;font-size:24px}
-.subtitle{text-align:center;color:#666;margin-bottom:30px;font-size:15px}
+.subtitle{text-align:center;color:#666;margin-bottom:25px;font-size:15px}
 .form-group{margin-bottom:18px}
 .form-group label{display:block;margin-bottom:8px;font-weight:600;color:#374151;font-size:14px}
 .form-group input,.form-group select{width:100%;padding:13px 15px;border:2px solid #e5e7eb;border-radius:10px;font-size:15px}
@@ -29,9 +29,11 @@ body{background:linear-gradient(135deg,#0d9488,#0f766e);min-height:100vh}
 .alert-error{background:#fee2e2;color:#991b1b}
 .alert-success{background:#d1fae5;color:#065f46}
 .alert-info{background:#dbeafe;color:#1e40af}
+.alert-warning{background:#fef3c7;color:#92400e}
 .auth-footer{text-align:center;margin-top:20px;padding-top:20px;border-top:1px solid #e5e7eb}
 .auth-footer a{color:#0d9488;text-decoration:none;font-weight:600;cursor:pointer}
 .test-cred{background:#f0fdfa;padding:12px;border-radius:10px;margin-top:15px;font-size:13px;color:#0f766e;text-align:center}
+.setup-notice{background:#fef3c7;padding:12px;border-radius:10px;margin-bottom:15px;font-size:13px;color:#92400e;border:1px solid #fcd34d}
 .app-container{display:flex;min-height:100vh;background:#f5f7fa}
 .sidebar{width:260px;background:#fff;border-left:1px solid #e5e7eb;padding:20px 0;position:fixed;right:0;top:0;bottom:0;overflow-y:auto}
 .sidebar-header{padding:0 20px 20px;border-bottom:1px solid #e5e7eb;margin-bottom:15px;text-align:center}
@@ -74,6 +76,7 @@ th{background:#f9fafb;font-weight:600}
 </head>
 <body>
 
+<!-- صفحة تسجيل الدخول -->
 <div id="login-page" class="auth-container">
 <div class="auth-box">
 <div class="logo-circle"><svg viewBox="0 0 24 24"><path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/></svg></div>
@@ -81,23 +84,41 @@ th{background:#f9fafb;font-weight:600}
 <p class="subtitle">دير البلح - تسجيل الدخول</p>
 <div id="login-alert"></div>
 
-<div id="setup-section" class="hidden">
-<div class="alert alert-info">⚙️ يرجى إعداد الاتصال بقاعدة البيانات أولاً</div>
-<div class="form-group"><label>🔗 رابط Supabase</label><input type="text" id="setup-url" placeholder="https://xxxxx.supabase.co"></div>
-<div class="form-group"><label>🔑 المفتاح العام</label><input type="text" id="setup-key" placeholder="eyJhbGciOi..."></div>
-<button class="btn btn-primary" onclick="saveSetup()">💾 حفظ والمتابعة</button>
+<!-- تنبيه إذا لم يكن Supabase مهيأ -->
+<div id="setup-warning" class="setup-notice hidden">
+⚠️ <strong>تنبيه:</strong> لم يتم إعداد Supabase بعد. 
+<a onclick="showSetup()" style="color:#0d9488;cursor:pointer;font-weight:bold">اضغط هنا للإعداد</a>
 </div>
 
-<form id="login-form" class="hidden">
+<!-- نموذج تسجيل الدخول (يظهر دائماً) -->
+<form id="login-form">
 <div class="form-group"><label>📧 البريد الإلكتروني</label><input type="email" id="login-email" required placeholder="admin@alaishiya.edu.ps"></div>
 <div class="form-group"><label>🔒 كلمة المرور</label><input type="password" id="login-password" required placeholder="••••••••"></div>
 <button type="submit" class="btn btn-primary" id="login-btn">🔐 تسجيل الدخول</button>
-<div class="auth-footer"><a onclick="showRegister()">📝 إنشاء حساب جديد</a></div>
+<div class="auth-footer">
+<p style="margin-bottom:10px;color:#666">ليس لديك حساب؟</p>
+<a onclick="showRegister()">📝 إنشاء حساب جديد</a>
+</div>
 <div class="test-cred"><strong>للتجربة:</strong><br>admin@alaishiya.edu.ps / Admin@123456</div>
 </form>
 </div>
 </div>
 
+<!-- صفحة إعداد Supabase -->
+<div id="setup-page" class="auth-container hidden">
+<div class="auth-box">
+<div class="logo-circle"><svg viewBox="0 0 24 24"><path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3z"/></svg></div>
+<h1>إعداد Supabase</h1>
+<p class="subtitle">أدخل بيانات الاتصال بقاعدة البيانات</p>
+<div id="setup-alert"></div>
+<div class="form-group"><label>🔗 رابط Supabase</label><input type="text" id="setup-url" placeholder="https://xxxxx.supabase.co"></div>
+<div class="form-group"><label> المفتاح العام (Anon Key)</label><input type="text" id="setup-key" placeholder="eyJhbGciOi..."></div>
+<button class="btn btn-primary" onclick="saveSetup()">💾 حفظ والمتابعة</button>
+<div class="auth-footer"><a onclick="showLogin()"> العودة لتسجيل الدخول</a></div>
+</div>
+</div>
+
+<!-- صفحة تسجيل مستخدم جديد -->
 <div id="register-page" class="auth-container hidden">
 <div class="auth-box">
 <div class="logo-circle"><svg viewBox="0 0 24 24"><path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3z"/></svg></div>
@@ -109,7 +130,7 @@ th{background:#f9fafb;font-weight:600}
 <div class="form-group"><label>📧 البريد الإلكتروني</label><input type="email" id="reg-email" required></div>
 <div class="form-group"><label> الهاتف</label><input type="tel" id="reg-phone"></div>
 <div class="form-group"><label>🎭 الدور</label><select id="reg-role"><option value="teacher">معلم</option><option value="employee">موظف</option><option value="user">مستخدم</option></select></div>
-<div class="form-group"><label>🔒 كلمة المرور</label><input type="password" id="reg-password" required minlength="6"></div>
+<div class="form-group"><label> كلمة المرور</label><input type="password" id="reg-password" required minlength="6"></div>
 <div class="form-group"><label>🔒 تأكيد كلمة المرور</label><input type="password" id="reg-password2" required></div>
 <button type="submit" class="btn btn-primary" id="register-btn">✨ إنشاء الحساب</button>
 <div class="auth-footer"><a onclick="showLogin()">🔐 العودة لتسجيل الدخول</a></div>
@@ -117,6 +138,7 @@ th{background:#f9fafb;font-weight:600}
 </div>
 </div>
 
+<!-- التطبيق الرئيسي -->
 <div id="app" class="app-container hidden">
 <aside class="sidebar" id="sidebar">
 <div class="sidebar-header"><h2>🏫 مدرسة العائشية</h2><p id="user-role-display">مدير النظام</p></div>
@@ -146,6 +168,7 @@ th{background:#f9fafb;font-weight:600}
 
 <div id="modal-container"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 let SUPABASE_URL=localStorage.getItem('SUPABASE_URL')||'';
 let SUPABASE_KEY=localStorage.getItem('SUPABASE_KEY')||'';
@@ -167,18 +190,39 @@ async getCurrentUser(){const{data:{user}}=await supabase.auth.getUser();return u
 async getProfile(uid){const{data}=await supabase.from('profiles').select('*').eq('id',uid).single();return data}
 };
 
+// ===== دوال التنقل بين الصفحات =====
 function showLogin(){
 document.getElementById('login-page').classList.remove('hidden');
+document.getElementById('setup-page').classList.add('hidden');
 document.getElementById('register-page').classList.add('hidden');
 document.getElementById('app').classList.add('hidden');
-if(!SUPABASE_URL||!SUPABASE_KEY){document.getElementById('setup-section').classList.remove('hidden');document.getElementById('login-form').classList.add('hidden')}
-else{document.getElementById('setup-section').classList.add('hidden');document.getElementById('login-form').classList.remove('hidden')}
+// إظهار تحذير إذا لم يكن Supabase مهيأ
+if(!SUPABASE_URL||!SUPABASE_KEY){
+document.getElementById('setup-warning').classList.remove('hidden');
+}else{
+document.getElementById('setup-warning').classList.add('hidden');
+}
 }
 
-function showRegister(){document.getElementById('login-page').classList.add('hidden');document.getElementById('register-page').classList.remove('hidden');document.getElementById('app').classList.add('hidden')}
+function showSetup(){
+document.getElementById('login-page').classList.add('hidden');
+document.getElementById('setup-page').classList.remove('hidden');
+document.getElementById('register-page').classList.add('hidden');
+document.getElementById('app').classList.add('hidden');
+document.getElementById('setup-url').value=SUPABASE_URL;
+document.getElementById('setup-key').value=SUPABASE_KEY;
+}
+
+function showRegister(){
+document.getElementById('login-page').classList.add('hidden');
+document.getElementById('setup-page').classList.add('hidden');
+document.getElementById('register-page').classList.remove('hidden');
+document.getElementById('app').classList.add('hidden');
+}
 
 function showApp(){
 document.getElementById('login-page').classList.add('hidden');
+document.getElementById('setup-page').classList.add('hidden');
 document.getElementById('register-page').classList.add('hidden');
 document.getElementById('app').classList.remove('hidden');
 document.getElementById('user-name').textContent=state.profile?.full_name||'مستخدم';
@@ -237,20 +281,20 @@ if(res.success){closeModal();renderStudents()}else{alert('خطأ: '+(res.error?.
 
 async function deleteStudent(id){if(!confirm('هل أنت متأكد؟'))return;const res=await services.delete('students',id);if(res.success)renderStudents()}
 
-async function renderGuardians(){const res=await services.getAll('guardians');const g=res.data||[];document.getElementById('page-content').innerHTML=`<div class="card"><div class="card-header"><h3>👨‍👩👧 أولياء الأمور (${res.total})</h3></div><div class="table-container"><table><thead><tr><th>الاسم</th><th>الصلة</th><th>الهاتف</th></tr></thead><tbody>${g.length===0?'<tr><td colspan="3" style="text-align:center;color:#666;padding:40px">لا يوجد</td></tr>':g.map(x=>`<tr><td><strong>${x.full_name}</strong></td><td>${x.relation||'-'}</td><td>${x.phone||'-'}</td></tr>`).join('')}</tbody></table></div></div>`}
+async function renderGuardians(){const res=await services.getAll('guardians');const g=res.data||[];document.getElementById('page-content').innerHTML=`<div class="card"><div class="card-header"><h3>👨‍👩‍ أولياء الأمور (${res.total})</h3></div><div class="table-container"><table><thead><tr><th>الاسم</th><th>الصلة</th><th>الهاتف</th></tr></thead><tbody>${g.length===0?'<tr><td colspan="3" style="text-align:center;color:#666;padding:40px">لا يوجد</td></tr>':g.map(x=>`<tr><td><strong>${x.full_name}</strong></td><td>${x.relation||'-'}</td><td>${x.phone||'-'}</td></tr>`).join('')}</tbody></table></div></div>`}
 
 async function renderClasses(){const res=await services.getAll('classes');const c=res.data||[];document.getElementById('page-content').innerHTML=`<div class="card"><div class="card-header"><h3>🏫 الصفوف (${res.total})</h3></div><div class="table-container"><table><thead><tr><th>المرحلة</th><th>الصف</th><th>الشعبة</th></tr></thead><tbody>${c.length===0?'<tr><td colspan="3" style="text-align:center;color:#666;padding:40px">لا يوجد</td></tr>':c.map(x=>`<tr><td>${x.stage}</td><td>${x.grade}</td><td>${x.section}</td></tr>`).join('')}</tbody></table></div></div>`}
 
 async function renderEmployees(){const res=await services.getAll('employees');const e=res.data||[];document.getElementById('page-content').innerHTML=`<div class="card"><div class="card-header"><h3>👔 الموظفون (${res.total})</h3></div><div class="table-container"><table><thead><tr><th>الاسم</th><th>المنصب</th><th>القسم</th></tr></thead><tbody>${e.length===0?'<tr><td colspan="3" style="text-align:center;color:#666;padding:40px">لا يوجد</td></tr>':e.map(x=>`<tr><td><strong>${x.full_name}</strong></td><td>${x.position||'-'}</td><td>${x.department||'-'}</td></tr>`).join('')}</tbody></table></div></div>`}
 
-async function renderWorkers(){const res=await services.getAll('workers');const w=res.data||[];document.getElementById('page-content').innerHTML=`<div class="card"><div class="card-header"><h3>🔧 العاملون (${res.total})</h3></div><div class="table-container"><table><thead><tr><th>الاسم</th><th>المنصب</th></tr></thead><tbody>${w.length===0?'<tr><td colspan="2" style="text-align:center;color:#666;padding:40px">لا يوجد</td></tr>':w.map(x=>`<tr><td><strong>${x.full_name}</strong></td><td>${x.position||'-'}</td></tr>`).join('')}</tbody></table></div></div>`}
+async function renderWorkers(){const res=await services.getAll('workers');const w=res.data||[];document.getElementById('page-content').innerHTML=`<div class="card"><div class="card-header"><h3> العاملون (${res.total})</h3></div><div class="table-container"><table><thead><tr><th>الاسم</th><th>المنصب</th></tr></thead><tbody>${w.length===0?'<tr><td colspan="2" style="text-align:center;color:#666;padding:40px">لا يوجد</td></tr>':w.map(x=>`<tr><td><strong>${x.full_name}</strong></td><td>${x.position||'-'}</td></tr>`).join('')}</tbody></table></div></div>`}
 
 async function renderSettings(){
-document.getElementById('page-content').innerHTML=`<div class="card"><div class="card-header"><h3>️ الإعدادات</h3></div><div style="padding:20px"><h4 style="margin-bottom:15px">معلومات الحساب</h4><p><strong>الاسم:</strong> ${state.profile?.full_name||'-'}</p><p><strong>البريد:</strong> ${state.user?.email||'-'}</p><p><strong>الدور:</strong> ${state.profile?.role||'-'}</p><hr style="margin:20px 0"><h4 style="margin-bottom:15px">Supabase</h4><div class="form-group"><label>URL</label><input id="cfg-url" value="${SUPABASE_URL}"></div><div class="form-group"><label>Anon Key</label><input id="cfg-key" value="${SUPABASE_KEY}" type="password"></div><button class="btn btn-primary" style="width:auto" onclick="saveSettings()">حفظ</button> <button class="btn btn-danger" style="width:auto" onclick="if(confirm('هل أنت متأكد؟')){localStorage.clear();location.reload()}">إعادة تعيين</button></div></div>`;
+document.getElementById('page-content').innerHTML=`<div class="card"><div class="card-header"><h3>⚙️ الإعدادات</h3></div><div style="padding:20px"><h4 style="margin-bottom:15px">معلومات الحساب</h4><p><strong>الاسم:</strong> ${state.profile?.full_name||'-'}</p><p><strong>البريد:</strong> ${state.user?.email||'-'}</p><p><strong>الدور:</strong> ${state.profile?.role||'-'}</p><hr style="margin:20px 0"><h4 style="margin-bottom:15px">Supabase</h4><div class="form-group"><label>URL</label><input id="cfg-url" value="${SUPABASE_URL}"></div><div class="form-group"><label>Anon Key</label><input id="cfg-key" value="${SUPABASE_KEY}" type="password"></div><button class="btn btn-primary" style="width:auto" onclick="saveSettings()">حفظ</button> <button class="btn btn-danger" style="width:auto" onclick="if(confirm('هل أنت متأكد؟')){localStorage.clear();location.reload()}">إعادة تعيين</button></div></div>`;
 }
 
 function saveSettings(){const u=document.getElementById('cfg-url').value;const k=document.getElementById('cfg-key').value;if(!u||!k){alert('يرجى ملء الحقول');return}localStorage.setItem('SUPABASE_URL',u);localStorage.setItem('SUPABASE_KEY',k);alert('تم الحفظ');location.reload()}
-function saveSetup(){const u=document.getElementById('setup-url').value;const k=document.getElementById('setup-key').value;if(!u||!k){alert('يرجى ملء الحقول');return}localStorage.setItem('SUPABASE_URL',u);localStorage.setItem('SUPABASE_KEY',k);location.reload()}
+function saveSetup(){const u=document.getElementById('setup-url').value;const k=document.getElementById('setup-key').value;if(!u||!k){alert('يرجى ملء الحقول');return}localStorage.setItem('SUPABASE_URL',u);localStorage.setItem('SUPABASE_KEY',k);alert('تم الحفظ! يمكنك الآن تسجيل الدخول');showLogin()}
 
 async function init(){
 if(!SUPABASE_URL||!SUPABASE_KEY){showLogin();return}
@@ -264,6 +308,7 @@ else{showLogin()}
 
 document.getElementById('login-form').addEventListener('submit',async e=>{
 e.preventDefault();
+if(!SUPABASE_URL||!SUPABASE_KEY){showAlert('login-alert','⚠️ يرجى إعداد Supabase أولاً من خلال الضغط على رابط الإعداد أعلاه','warning');return}
 const email=document.getElementById('login-email').value;
 const password=document.getElementById('login-password').value;
 const btn=document.getElementById('login-btn');
@@ -278,6 +323,7 @@ showApp();
 
 document.getElementById('register-form').addEventListener('submit',async e=>{
 e.preventDefault();
+if(!SUPABASE_URL||!SUPABASE_KEY){showAlert('register-alert','⚠️ يرجى إعداد Supabase أولاً','warning');return}
 const name=document.getElementById('reg-name').value;
 const email=document.getElementById('reg-email').value;
 const phone=document.getElementById('reg-phone').value;
@@ -289,7 +335,7 @@ if(pw!==pw2){showAlert('register-alert','كلمة المرور غير متطاب
 btn.disabled=true;btn.textContent='جارٍ...';
 try{
 await auth.register(email,pw,name,phone,role);
-showAlert('register-alert','✅ تم إنشاء الحساب!','success');
+showAlert('register-alert','✅ تم إنشاء الحساب! يمكنك الآن تسجيل الدخول','success');
 setTimeout(()=>showLogin(),2000);
 }catch(err){showAlert('register-alert','خطأ: '+(err.message||'فشل'));btn.disabled=false;btn.textContent='✨ إنشاء الحساب'}
 });
@@ -298,6 +344,5 @@ document.querySelectorAll('.nav-item').forEach(i=>i.addEventListener('click',()=
 
 init();
 </script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </body>
 </html>
