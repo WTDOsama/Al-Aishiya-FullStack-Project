@@ -9,8 +9,6 @@
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Arial, sans-serif; }
 body { background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%); min-height: 100vh; }
 .hidden { display: none !important; }
-
-/* ===== شاشة تسجيل الدخول ===== */
 .auth-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
 .auth-box { background: white; border-radius: 20px; padding: 40px; width: 100%; max-width: 440px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
 .logo-circle { width: 110px; height: 110px; background: #0d9488; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; border: 5px solid #fbbf24; }
@@ -19,94 +17,64 @@ body { background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%); min-height
 .auth-box .subtitle { text-align: center; color: #666; margin-bottom: 30px; font-size: 15px; }
 .form-group { margin-bottom: 18px; }
 .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #374151; font-size: 14px; }
-.form-group input, .form-group select { width: 100%; padding: 13px 15px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 15px; transition: all 0.2s; }
-.form-group input:focus, .form-group select:focus { outline: none; border-color: #0d9488; box-shadow: 0 0 0 3px rgba(13,148,136,0.1); }
-.btn { padding: 13px 24px; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; width: 100%; }
+.form-group input, .form-group select { width: 100%; padding: 13px 15px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 15px; }
+.form-group input:focus { outline: none; border-color: #0d9488; }
+.btn { padding: 13px 24px; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; width: 100%; }
 .btn-primary { background: #0d9488; color: white; }
-.btn-primary:hover { background: #0f766e; transform: translateY(-1px); }
-.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+.btn-primary:hover { background: #0f766e; }
+.btn-primary:disabled { opacity: 0.6; }
 .btn-secondary { background: #f3f4f6; color: #374151; }
-.btn-secondary:hover { background: #e5e7eb; }
 .btn-danger { background: #dc2626; color: white; }
 .btn-sm { padding: 7px 14px; font-size: 13px; width: auto; }
 .alert { padding: 12px 16px; border-radius: 10px; margin-bottom: 15px; font-size: 14px; }
-.alert-error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
-.alert-success { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
-.alert-info { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
+.alert-error { background: #fee2e2; color: #991b1b; }
+.alert-success { background: #d1fae5; color: #065f46; }
 .auth-footer { text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #e5e7eb; }
 .auth-footer a { color: #0d9488; text-decoration: none; font-weight: 600; cursor: pointer; }
-.auth-footer a:hover { text-decoration: underline; }
-.test-credentials { background: #f0fdfa; padding: 12px; border-radius: 10px; margin-top: 15px; font-size: 13px; color: #0f766e; text-align: center; border: 1px solid #99f6e4; }
-
-/* ===== التطبيق الرئيسي ===== */
+.test-credentials { background: #f0fdfa; padding: 12px; border-radius: 10px; margin-top: 15px; font-size: 13px; color: #0f766e; text-align: center; }
 .app-container { display: flex; min-height: 100vh; background: #f5f7fa; }
-.sidebar { width: 260px; background: white; border-left: 1px solid #e5e7eb; padding: 20px 0; position: fixed; right: 0; top: 0; bottom: 0; overflow-y: auto; z-index: 50; }
+.sidebar { width: 260px; background: white; border-left: 1px solid #e5e7eb; padding: 20px 0; position: fixed; right: 0; top: 0; bottom: 0; overflow-y: auto; }
 .sidebar-header { padding: 0 20px 20px; border-bottom: 1px solid #e5e7eb; margin-bottom: 15px; text-align: center; }
-.sidebar-header .logo-small { width: 60px; height: 60px; background: #0d9488; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; border: 3px solid #fbbf24; }
-.sidebar-header .logo-small svg { width: 35px; height: 35px; fill: white; }
 .sidebar-header h2 { color: #0d9488; font-size: 15px; }
-.sidebar-header p { color: #666; font-size: 12px; margin-top: 4px; }
-.nav-item { padding: 12px 20px; cursor: pointer; display: flex; align-items: center; gap: 10px; color: #4b5563; transition: all 0.2s; border-right: 3px solid transparent; font-size: 14px; }
+.sidebar-header p { color: #666; font-size: 12px; }
+.nav-item { padding: 12px 20px; cursor: pointer; display: flex; align-items: center; gap: 10px; color: #4b5563; border-right: 3px solid transparent; }
 .nav-item:hover { background: #f3f4f6; }
 .nav-item.active { background: #f0fdfa; color: #0d9488; border-right-color: #0d9488; font-weight: 600; }
 .main-content { flex: 1; margin-right: 260px; padding: 30px; }
-.top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; background: white; padding: 15px 20px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); flex-wrap: wrap; gap: 10px; }
+.top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; background: white; padding: 15px 20px; border-radius: 12px; }
 .user-info { display: flex; align-items: center; gap: 10px; }
 .user-avatar { width: 40px; height: 40px; border-radius: 50%; background: #0d9488; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; }
-
-/* البطاقات */
 .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 18px; margin-bottom: 25px; }
 .stat-card { background: white; padding: 22px; border-radius: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-right: 4px solid #0d9488; }
 .stat-card .label { color: #6b7280; font-size: 13px; margin-bottom: 8px; }
-.stat-card .value { font-size: 28px; font-weight: bold; color: #1f2937; }
-.stat-card.male { border-right-color: #3b82f6; }
-.stat-card.female { border-right-color: #ec4899; }
-
-/* الجداول */
+.stat-card .value { font-size: 28px; font-weight: bold; }
 .card { background: white; border-radius: 14px; padding: 22px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 20px; }
-.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 10px; }
+.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
 .card-header h3 { color: #1f2937; font-size: 18px; }
 .table-container { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; }
-th, td { padding: 12px 14px; text-align: right; border-bottom: 1px solid #e5e7eb; font-size: 14px; }
-th { background: #f9fafb; font-weight: 600; color: #374151; }
-tr:hover { background: #f9fafb; }
-.badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; }
+th, td { padding: 12px 14px; text-align: right; border-bottom: 1px solid #e5e7eb; }
+th { background: #f9fafb; font-weight: 600; }
+.badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; }
 .badge-success { background: #d1fae5; color: #065f46; }
 .badge-warning { background: #fef3c7; color: #92400e; }
-.badge-danger { background: #fee2e2; color: #991b1b; }
-
-/* Modal */
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; }
 .modal { background: white; border-radius: 16px; padding: 30px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; }
 .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.close-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: #6b7280; }
+.close-btn { background: none; border: none; font-size: 24px; cursor: pointer; }
 .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
-
-/* Search */
-.toolbar { display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; }
-.search-box { flex: 1; min-width: 200px; }
-.search-box input { width: 100%; padding: 10px 14px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 14px; }
-.filter-select { padding: 10px 14px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 14px; background: white; }
-
-/* Spinner */
+.toolbar { display: flex; gap: 10px; margin-bottom: 18px; }
+.search-box { flex: 1; }
+.search-box input { width: 100%; padding: 10px 14px; border: 2px solid #e5e7eb; border-radius: 10px; }
+.filter-select { padding: 10px 14px; border: 2px solid #e5e7eb; border-radius: 10px; background: white; }
 .spinner { width: 40px; height: 40px; border: 4px solid #e5e7eb; border-top-color: #0d9488; border-radius: 50%; animation: spin 1s linear infinite; margin: 20px auto; }
 @keyframes spin { to { transform: rotate(360deg); } }
-
-/* Responsive */
-@media (max-width: 768px) {
-  .sidebar { transform: translateX(100%); transition: transform 0.3s; }
-  .sidebar.open { transform: translateX(0); }
-  .main-content { margin-right: 0; padding: 15px; }
-  .stats-grid { grid-template-columns: repeat(2, 1fr); }
-  .menu-toggle { display: block !important; }
-}
-.menu-toggle { display: none; position: fixed; top: 15px; right: 15px; z-index: 60; background: #0d9488; color: white; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; }
+@media (max-width: 768px) { .sidebar { transform: translateX(100%); } .sidebar.open { transform: translateX(0); } .main-content { margin-right: 0; } }
 </style>
 </head>
 <body>
 
-<!-- ===== صفحة تسجيل الدخول ===== -->
+<!-- تسجيل الدخول -->
 <div id="login-page" class="auth-container">
   <div class="auth-box">
     <div class="logo-circle">
@@ -114,215 +82,131 @@ tr:hover { background: #f9fafb; }
     </div>
     <h1>نظام إدارة طلبة مدرسة العائشية</h1>
     <p class="subtitle">دير البلح - تسجيل الدخول</p>
-    
     <div id="login-alert"></div>
     
-    <!-- نموذج إعداد Supabase (يظهر أول مرة فقط) -->
     <div id="setup-section" class="hidden">
-      <div class="alert alert-info">️ يرجى إعداد الاتصال بقاعدة البيانات أولاً</div>
+      <div class="alert alert-error">⚠️ يرجى إعداد Supabase أولاً</div>
       <div class="form-group">
-        <label>🔗 رابط مشروع Supabase</label>
+        <label>Supabase URL</label>
         <input type="text" id="setup-url" placeholder="https://xxxxx.supabase.co">
       </div>
       <div class="form-group">
-        <label>🔑 المفتاح العام (Anon Key)</label>
+        <label>Supabase Anon Key</label>
         <input type="text" id="setup-key" placeholder="eyJhbGciOi...">
       </div>
-      <button class="btn btn-primary" onclick="saveSetup()"> حفظ والمتابعة</button>
-      <div class="auth-footer">
-        <p style="font-size:12px;color:#666;">احصل على البيانات من: supabase.com → Project Settings → API</p>
-      </div>
+      <button class="btn btn-primary" onclick="saveSetup()">حفظ والمتابعة</button>
     </div>
     
-    <!-- نموذج تسجيل الدخول -->
     <form id="login-form" class="hidden">
       <div class="form-group">
-        <label> البريد الإلكتروني</label>
-        <input type="email" id="login-email" required placeholder="admin@alaishiya.edu.ps" autocomplete="email">
+        <label>البريد الإلكتروني</label>
+        <input type="email" id="login-email" required placeholder="admin@alaishiya.edu.ps">
       </div>
       <div class="form-group">
-        <label>🔒 كلمة المرور</label>
-        <input type="password" id="login-password" required placeholder="••••••••" autocomplete="current-password">
+        <label>كلمة المرور</label>
+        <input type="password" id="login-password" required placeholder="••••••••">
       </div>
       <button type="submit" class="btn btn-primary" id="login-btn">🔐 تسجيل الدخول</button>
-      
       <div class="auth-footer">
-        <p style="margin-bottom:10px;color:#666;">ليس لديك حساب؟</p>
         <a onclick="showRegister()">📝 إنشاء حساب جديد</a>
       </div>
-      
-      <div class="test-credentials">
-        <strong>للتجربة:</strong><br>
-        admin@alaishiya.edu.ps / Admin@123456
-      </div>
+      <div class="test-credentials">للتجربة: admin@alaishiya.edu.ps / Admin@123456</div>
     </form>
   </div>
 </div>
 
-<!-- ===== صفحة تسجيل مستخدم جديد ===== -->
+<!-- تسجيل مستخدم جديد -->
 <div id="register-page" class="auth-container hidden">
   <div class="auth-box">
     <div class="logo-circle">
-      <svg viewBox="0 0 24 24"><path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3z"/></svg>
     </div>
     <h1>إنشاء حساب جديد</h1>
     <p class="subtitle">نظام إدارة طلبة مدرسة العائشية</p>
-    
     <div id="register-alert"></div>
-    
     <form id="register-form">
-      <div class="form-group">
-        <label>👤 الاسم الكامل</label>
-        <input type="text" id="reg-name" required placeholder="محمد أحمد">
-      </div>
-      <div class="form-group">
-        <label> البريد الإلكتروني</label>
-        <input type="email" id="reg-email" required placeholder="example@alaishiya.edu.ps">
-      </div>
-      <div class="form-group">
-        <label>📱 رقم الهاتف (اختياري)</label>
-        <input type="tel" id="reg-phone" placeholder="059xxxxxxx">
-      </div>
-      <div class="form-group">
-        <label>🎭 الدور الوظيفي</label>
-        <select id="reg-role">
-          <option value="teacher">معلم</option>
-          <option value="employee">موظف</option>
-          <option value="school_manager">مدير مدرسة</option>
-          <option value="user">مستخدم عادي</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>🔒 كلمة المرور</label>
-        <input type="password" id="reg-password" required placeholder="6 أحرف على الأقل" minlength="6">
-      </div>
-      <div class="form-group">
-        <label>🔒 تأكيد كلمة المرور</label>
-        <input type="password" id="reg-password2" required placeholder="أعد إدخال كلمة المرور">
-      </div>
+      <div class="form-group"><label>الاسم الكامل</label><input type="text" id="reg-name" required></div>
+      <div class="form-group"><label>البريد الإلكتروني</label><input type="email" id="reg-email" required></div>
+      <div class="form-group"><label>الهاتف</label><input type="tel" id="reg-phone"></div>
+      <div class="form-group"><label>الدور</label><select id="reg-role"><option value="teacher">معلم</option><option value="employee">موظف</option><option value="user">مستخدم</option></select></div>
+      <div class="form-group"><label>كلمة المرور</label><input type="password" id="reg-password" required minlength="6"></div>
+      <div class="form-group"><label>تأكيد كلمة المرور</label><input type="password" id="reg-password2" required></div>
       <button type="submit" class="btn btn-primary" id="register-btn">✨ إنشاء الحساب</button>
-      
-      <div class="auth-footer">
-        <p style="margin-bottom:10px;color:#666;">لديك حساب بالفعل؟</p>
-        <a onclick="showLogin()">🔐 تسجيل الدخول</a>
-      </div>
+      <div class="auth-footer"><a onclick="showLogin()"> تسجيل الدخول</a></div>
     </form>
   </div>
 </div>
 
-<!-- ===== التطبيق الرئيسي ===== -->
+<!-- التطبيق الرئيسي -->
 <div id="app" class="app-container hidden">
-  <button class="menu-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <div class="logo-small">
-        <svg viewBox="0 0 24 24"><path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3z"/></svg>
-      </div>
-      <h2>مدرسة العائشية</h2>
+      <h2>🏫 مدرسة العائشية</h2>
       <p id="user-role-display">مدير النظام</p>
     </div>
     <nav>
-      <div class="nav-item active" data-page="dashboard"><span>📊</span> لوحة التحكم</div>
-      <div class="nav-item" data-page="students"><span>🎓</span> الطلبة</div>
-      <div class="nav-item" data-page="guardians"><span>‍👩‍👧</span> أولياء الأمور</div>
-      <div class="nav-item" data-page="classes"><span>🏫</span> الصفوف</div>
-      <div class="nav-item" data-page="attendance"><span>📋</span> الحضور</div>
-      <div class="nav-item" data-page="performance"><span>📝</span> الأداء الأكاديمي</div>
-      <div class="nav-item" data-page="employees"><span></span> الموظفون</div>
-      <div class="nav-item" data-page="workers"><span>🔧</span> العاملون</div>
-      <div class="nav-item" data-page="biscuit"><span>🍪</span> البسكويت</div>
-      <div class="nav-item" data-page="reports"><span>📄</span> التقارير</div>
-      <div class="nav-item" data-page="settings"><span>⚙️</span> الإعدادات</div>
-      <div class="nav-item" data-page="logout" style="margin-top:20px;color:#dc2626;"><span></span> تسجيل الخروج</div>
+      <div class="nav-item active" data-page="dashboard">📊 لوحة التحكم</div>
+      <div class="nav-item" data-page="students">🎓 الطلبة</div>
+      <div class="nav-item" data-page="guardians">👨‍👩‍👧 أولياء الأمور</div>
+      <div class="nav-item" data-page="classes"> الصفوف</div>
+      <div class="nav-item" data-page="attendance">📋 الحضور</div>
+      <div class="nav-item" data-page="employees"> الموظفون</div>
+      <div class="nav-item" data-page="workers"> العاملون</div>
+      <div class="nav-item" data-page="settings">️ الإعدادات</div>
+      <div class="nav-item" data-page="logout" style="margin-top:20px;color:#dc2626;">🚪 تسجيل الخروج</div>
     </nav>
   </aside>
-  
   <main class="main-content">
     <div class="top-bar">
-      <div>
-        <h2 id="page-title">لوحة التحكم</h2>
-        <p style="color:#666;font-size:13px;" id="current-date"></p>
-      </div>
+      <div><h2 id="page-title">لوحة التحكم</h2></div>
       <div class="user-info">
         <div class="user-avatar" id="user-avatar">م</div>
-        <div>
-          <div style="font-weight:600;" id="user-name">مستخدم</div>
-          <div style="font-size:12px;color:#666;" id="user-email">email@example.com</div>
-        </div>
+        <div><div style="font-weight:600;" id="user-name">مستخدم</div><div style="font-size:12px;color:#666;" id="user-email">email@example.com</div></div>
       </div>
     </div>
     <div id="page-content"></div>
   </main>
 </div>
 
-<!-- Modal -->
 <div id="modal-container"></div>
 
 <script>
-// ============================================
-// الإعدادات
-// ============================================
 let SUPABASE_URL = localStorage.getItem('SUPABASE_URL') || '';
 let SUPABASE_KEY = localStorage.getItem('SUPABASE_KEY') || '';
 let supabase = null;
+const state = { user: null, profile: null, currentPage: 'dashboard', data: { students: [], guardians: [], classes: [], employees: [], workers: [] } };
 
-const state = {
-  user: null,
-  profile: null,
-  currentPage: 'dashboard',
-  data: { students: [], guardians: [], classes: [], employees: [], workers: [] }
-};
-
-// ============================================
-// خدمات البيانات
-// ============================================
 const services = {
-  async getAll(table, filters = {}) {
+  async getAll(table) {
     try {
-      let query = supabase.from(table).select('*', { count: 'exact' });
-      if (filters.search && filters.searchField) {
-        query = query.ilike(filters.searchField, `%${filters.search}%`);
-      }
-      const { data, error, count } = await query.order('created_at', { ascending: false });
+      const { data, error, count } = await supabase.from(table).select('*', { count: 'exact' }).order('created_at', { ascending: false });
       if (error) throw error;
       return { success: true, data: data || [], total: count || 0 };
-    } catch (error) {
-      console.error(`خطأ في ${table}:`, error);
-      return { success: false, data: [], total: 0, error };
-    }
+    } catch (error) { return { success: false, data: [], total: 0, error }; }
   },
   async insert(table, record) {
     try {
       const { data, error } = await supabase.from(table).insert(record).select().single();
       if (error) throw error;
       return { success: true, data };
-    } catch (error) {
-      return { success: false, error };
-    }
+    } catch (error) { return { success: false, error }; }
   },
   async update(table, id, record) {
     try {
       const { data, error } = await supabase.from(table).update(record).eq('id', id).select().single();
       if (error) throw error;
       return { success: true, data };
-    } catch (error) {
-      return { success: false, error };
-    }
+    } catch (error) { return { success: false, error }; }
   },
   async delete(table, id) {
     try {
       const { error } = await supabase.from(table).delete().eq('id', id);
       if (error) throw error;
       return { success: true };
-    } catch (error) {
-      return { success: false, error };
-    }
+    } catch (error) { return { success: false, error }; }
   }
 };
 
-// ============================================
-// المصادقة
-// ============================================
 const auth = {
   async login(email, password) {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
@@ -330,52 +214,22 @@ const auth = {
     return data;
   },
   async register(email, password, fullName, phone, role) {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { full_name: fullName, role: role }
-      }
-    });
+    const { data, error } = await supabase.auth.signUp({ email, password, options: { data: { full_name: fullName, role: role } } });
     if (error) throw error;
-    
-    // إنشاء profile
     if (data.user) {
-      await supabase.from('profiles').insert({
-        id: data.user.id,
-        full_name: fullName,
-        email: email,
-        role: role,
-        phone: phone,
-        active: true
-      });
+      await supabase.from('profiles').insert({ id: data.user.id, full_name: fullName, email: email, role: role, phone: phone, active: true });
     }
     return data;
   },
-  async logout() {
-    await supabase.auth.signOut();
-    state.user = null;
-    state.profile = null;
-    showLogin();
-  },
-  async getCurrentUser() {
-    const { data: { user } } = await supabase.auth.getUser();
-    return user;
-  },
-  async getProfile(userId) {
-    const { data } = await supabase.from('profiles').select('*').eq('id', userId).single();
-    return data;
-  }
+  async logout() { await supabase.auth.signOut(); state.user = null; state.profile = null; showLogin(); },
+  async getCurrentUser() { const { data: { user } } = await supabase.auth.getUser(); return user; },
+  async getProfile(userId) { const { data } = await supabase.from('profiles').select('*').eq('id', userId).single(); return data; }
 };
 
-// ============================================
-// التنقل بين الصفحات
-// ============================================
 function showLogin() {
   document.getElementById('login-page').classList.remove('hidden');
   document.getElementById('register-page').classList.add('hidden');
   document.getElementById('app').classList.add('hidden');
-  
   if (!SUPABASE_URL || !SUPABASE_KEY) {
     document.getElementById('setup-section').classList.remove('hidden');
     document.getElementById('login-form').classList.add('hidden');
@@ -397,15 +251,9 @@ function showApp() {
   document.getElementById('app').classList.remove('hidden');
   document.getElementById('user-name').textContent = state.profile?.full_name || 'مستخدم';
   document.getElementById('user-email').textContent = state.user?.email || '';
-  document.getElementById('user-role-display').textContent = getRoleName(state.profile?.role);
+  document.getElementById('user-role-display').textContent = state.profile?.role || 'مستخدم';
   document.getElementById('user-avatar').textContent = (state.profile?.full_name || 'م')[0];
-  document.getElementById('current-date').textContent = new Date().toLocaleDateString('ar-PS', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
   navigateTo('dashboard');
-}
-
-function getRoleName(role) {
-  const roles = { admin: 'مدير النظام', school_manager: 'مدير المدرسة', teacher: 'معلم', employee: 'موظف', user: 'مستخدم' };
-  return roles[role] || 'مستخدم';
 }
 
 function showAlert(containerId, message, type = 'error') {
@@ -415,339 +263,108 @@ function showAlert(containerId, message, type = 'error') {
 }
 
 function showModal(title, content, onSave) {
-  const container = document.getElementById('modal-container');
-  container.innerHTML = `
+  document.getElementById('modal-container').innerHTML = `
     <div class="modal-overlay" onclick="if(event.target===this)closeModal()">
       <div class="modal">
-        <div class="modal-header">
-          <h3>${title}</h3>
-          <button class="close-btn" onclick="closeModal()">×</button>
-        </div>
+        <div class="modal-header"><h3>${title}</h3><button class="close-btn" onclick="closeModal()">×</button></div>
         <div id="modal-content">${content}</div>
         <div class="modal-actions">
           <button class="btn btn-secondary" style="width:auto;" onclick="closeModal()">إلغاء</button>
           <button class="btn btn-primary" style="width:auto;" id="modal-save-btn">حفظ</button>
         </div>
       </div>
-    </div>
-  `;
+    </div>`;
   document.getElementById('modal-save-btn').onclick = onSave;
 }
 
-function closeModal() {
-  document.getElementById('modal-container').innerHTML = '';
-}
+function closeModal() { document.getElementById('modal-container').innerHTML = ''; }
 
 function navigateTo(page) {
   state.currentPage = page;
-  document.querySelectorAll('.nav-item').forEach(item => {
-    item.classList.toggle('active', item.dataset.page === page);
-  });
-  document.getElementById('sidebar').classList.remove('open');
-  
-  const titles = {
-    dashboard: 'لوحة التحكم', students: 'إدارة الطلبة', guardians: 'أولياء الأمور',
-    classes: 'الصفوف الدراسية', attendance: 'الحضور والغياب', performance: 'الأداء الأكاديمي',
-    employees: 'الموظفون', workers: 'العاملون', biscuit: 'مخزون البسكويت',
-    reports: 'التقارير', settings: 'الإعدادات'
-  };
+  document.querySelectorAll('.nav-item').forEach(item => item.classList.toggle('active', item.dataset.page === page));
+  const titles = { dashboard: 'لوحة التحكم', students: 'إدارة الطلبة', guardians: 'أولياء الأمور', classes: 'الصفوف', attendance: 'الحضور', employees: 'الموظفون', workers: 'العاملون', settings: 'الإعدادات' };
   document.getElementById('page-title').textContent = titles[page] || page;
-  
-  const content = document.getElementById('page-content');
-  content.innerHTML = '<div class="spinner"></div>';
-  
-  const renderers = {
-    dashboard: renderDashboard, students: renderStudents, guardians: renderGuardians,
-    classes: renderClasses, attendance: renderAttendance, performance: renderPerformance,
-    employees: renderEmployees, workers: renderWorkers, biscuit: renderBiscuit,
-    reports: renderReports, settings: renderSettings, logout: () => auth.logout()
-  };
-  
+  document.getElementById('page-content').innerHTML = '<div class="spinner"></div>';
+  const renderers = { dashboard: renderDashboard, students: renderStudents, guardians: renderGuardians, classes: renderClasses, attendance: () => document.getElementById('page-content').innerHTML = '<div class="card"><div class="card-header"><h3>📋 الحضور</h3></div><p style="text-align:center;padding:40px;color:#666;">قيد التطوير</p></div>', employees: renderEmployees, workers: renderWorkers, settings: renderSettings, logout: () => auth.logout() };
   if (renderers[page]) renderers[page]();
 }
 
-// ============================================
-// الصفحات
-// ============================================
 async function renderDashboard() {
-  const content = document.getElementById('page-content');
-  try {
-    const [studentsRes, classesRes, employeesRes, workersRes] = await Promise.all([
-      services.getAll('students'),
-      services.getAll('classes'),
-      services.getAll('employees'),
-      services.getAll('workers')
-    ]);
-    
-    const students = studentsRes.data || [];
-    const male = students.filter(s => s.gender === 'ذكر').length;
-    const female = students.filter(s => s.gender === 'أنثى').length;
-    
-    content.innerHTML = `
-      <div class="stats-grid">
-        <div class="stat-card"><div class="label">إجمالي الطلبة</div><div class="value">${studentsRes.total}</div></div>
-        <div class="stat-card male"><div class="label">الذكور</div><div class="value">${male}</div></div>
-        <div class="stat-card female"><div class="label">الإناث</div><div class="value">${female}</div></div>
-        <div class="stat-card"><div class="label">الصفوف</div><div class="value">${classesRes.total}</div></div>
-        <div class="stat-card"><div class="label">الموظفون</div><div class="value">${employeesRes.total}</div></div>
-        <div class="stat-card"><div class="label">العاملون</div><div class="value">${workersRes.total}</div></div>
-      </div>
-      <div class="card">
-        <div class="card-header"><h3>🎉 مرحباً بك في نظام إدارة طلبة مدرسة العائشية</h3></div>
-        <p style="color:#666;padding:20px;text-align:center;line-height:1.8;">
-          استخدم القائمة الجانبية للتنقل بين الأقسام المختلفة.<br>
-          لإضافة بيانات، تأكد من إعداد قاعدة البيانات في Supabase أولاً.<br>
-          <strong>عدد الطلبة الحالي:</strong> ${studentsRes.total} طالب وطالبة
-        </p>
-      </div>
-    `;
-  } catch (error) {
-    content.innerHTML = `<div class="card"><div class="alert alert-error">خطأ في تحميل البيانات: ${error.message}</div></div>`;
-  }
+  const [studentsRes, classesRes, employeesRes, workersRes] = await Promise.all([services.getAll('students'), services.getAll('classes'), services.getAll('employees'), services.getAll('workers')]);
+  const students = studentsRes.data || [];
+  const male = students.filter(s => s.gender === 'ذكر').length;
+  const female = students.filter(s => s.gender === 'أنثى').length;
+  document.getElementById('page-content').innerHTML = `
+    <div class="stats-grid">
+      <div class="stat-card"><div class="label">إجمالي الطلبة</div><div class="value">${studentsRes.total}</div></div>
+      <div class="stat-card" style="border-right-color:#3b82f6;"><div class="label">الذكور</div><div class="value">${male}</div></div>
+      <div class="stat-card" style="border-right-color:#ec4899;"><div class="label">الإناث</div><div class="value">${female}</div></div>
+      <div class="stat-card"><div class="label">الصفوف</div><div class="value">${classesRes.total}</div></div>
+      <div class="stat-card"><div class="label">الموظفون</div><div class="value">${employeesRes.total}</div></div>
+      <div class="stat-card"><div class="label">العاملون</div><div class="value">${workersRes.total}</div></div>
+    </div>
+    <div class="card"><div class="card-header"><h3>🎉 مرحباً بك</h3></div><p style="color:#666;padding:20px;">استخدم القائمة الجانبية للتنقل</p></div>`;
 }
 
 async function renderStudents() {
-  const content = document.getElementById('page-content');
   const res = await services.getAll('students');
   const students = res.data || [];
-  
-  content.innerHTML = `
+  document.getElementById('page-content').innerHTML = `
     <div class="card">
-      <div class="card-header">
-        <h3>🎓 قائمة الطلبة (${res.total})</h3>
-        <button class="btn btn-primary" onclick="showStudentForm()" style="width:auto;">+ إضافة طالب</button>
-      </div>
+      <div class="card-header"><h3>🎓 الطلبة (${res.total})</h3><button class="btn btn-primary" onclick="showStudentForm()" style="width:auto;">+ إضافة طالب</button></div>
       <div class="toolbar">
-        <div class="search-box">
-          <input type="text" id="student-search" placeholder="🔍 بحث بالاسم أو رقم الملف..." oninput="filterStudents()">
-        </div>
-        <select class="filter-select" id="stage-filter" onchange="filterStudents()">
-          <option value="">كل المراحل</option>
-          <option>ابتدائي</option><option>إعدادي</option><option>ثانوي</option>
-        </select>
-        <select class="filter-select" id="gender-filter" onchange="filterStudents()">
-          <option value="">كل الجنسين</option>
-          <option>ذكر</option><option>أنثى</option>
-        </select>
+        <div class="search-box"><input type="text" id="student-search" placeholder="🔍 بحث..." oninput="filterStudents()"></div>
+        <select class="filter-select" id="stage-filter" onchange="filterStudents()"><option value="">الكل</option><option>ابتدائي</option><option>إعدادي</option><option>ثانوي</option></select>
       </div>
       <div class="table-container">
-        <table>
-          <thead><tr><th>رقم الملف</th><th>الاسم</th><th>الجنس</th><th>المرحلة</th><th>الصف</th><th>الحالة</th><th>إجراءات</th></tr></thead>
-          <tbody id="students-tbody">
-            ${students.length === 0 ? '<tr><td colspan="7" style="text-align:center;color:#666;padding:40px;">لا يوجد طلبة. اضغط "إضافة طالب" للبدء.</td></tr>' : ''}
-            ${students.map(s => `
-              <tr>
-                <td>${s.file_number || '-'}</td>
-                <td><strong>${s.full_name || '-'}</strong></td>
-                <td>${s.gender || '-'}</td>
-                <td>${s.stage || '-'}</td>
-                <td>${s.grade || '-'} ${s.section || ''}</td>
-                <td><span class="badge badge-${s.status === 'نشط' ? 'success' : 'warning'}">${s.status || 'نشط'}</span></td>
-                <td>
-                  <button class="btn btn-secondary btn-sm" onclick="showStudentForm('${s.id}')">تعديل</button>
-                  <button class="btn btn-danger btn-sm" onclick="deleteStudent('${s.id}')">حذف</button>
-                </td>
-              </tr>
-            `).join('')}
-          </tbody>
+        <table><thead><tr><th>رقم الملف</th><th>الاسم</th><th>الجنس</th><th>المرحلة</th><th>الصف</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+        <tbody id="students-tbody">${students.length === 0 ? '<tr><td colspan="7" style="text-align:center;color:#666;padding:40px;">لا يوجد طلبة</td></tr>' : students.map(s => `<tr><td>${s.file_number||'-'}</td><td><strong>${s.full_name||'-'}</strong></td><td>${s.gender||'-'}</td><td>${s.stage||'-'}</td><td>${s.grade||'-'} ${s.section||''}</td><td><span class="badge badge-${s.status==='نشط'?'success':'warning'}">${s.status||'نشط'}</span></td><td><button class="btn btn-secondary btn-sm" onclick="showStudentForm('${s.id}')">تعديل</button> <button class="btn btn-danger btn-sm" onclick="deleteStudent('${s.id}')">حذف</button></td></tr>`).join('')}</tbody>
         </table>
       </div>
-    </div>
-  `;
+    </div>`;
   state.data.students = students;
 }
 
 function filterStudents() {
   const search = document.getElementById('student-search').value.toLowerCase();
   const stage = document.getElementById('stage-filter').value;
-  const gender = document.getElementById('gender-filter').value;
-  
-  const filtered = state.data.students.filter(s => {
-    const matchSearch = !search || (s.full_name || '').toLowerCase().includes(search) || (s.file_number || '').includes(search);
-    const matchStage = !stage || s.stage === stage;
-    const matchGender = !gender || s.gender === gender;
-    return matchSearch && matchStage && matchGender;
-  });
-  
+  const filtered = state.data.students.filter(s => (!search || (s.full_name||'').toLowerCase().includes(search) || (s.file_number||'').includes(search)) && (!stage || s.stage === stage));
   const tbody = document.getElementById('students-tbody');
-  tbody.innerHTML = filtered.length === 0 
-    ? '<tr><td colspan="7" style="text-align:center;color:#666;">لا توجد نتائج</td></tr>'
-    : filtered.map(s => `
-      <tr>
-        <td>${s.file_number || '-'}</td>
-        <td><strong>${s.full_name || '-'}</strong></td>
-        <td>${s.gender || '-'}</td>
-        <td>${s.stage || '-'}</td>
-        <td>${s.grade || '-'} ${s.section || ''}</td>
-        <td><span class="badge badge-${s.status === 'نشط' ? 'success' : 'warning'}">${s.status || 'نشط'}</span></td>
-        <td>
-          <button class="btn btn-secondary btn-sm" onclick="showStudentForm('${s.id}')">تعديل</button>
-          <button class="btn btn-danger btn-sm" onclick="deleteStudent('${s.id}')">حذف</button>
-        </td>
-      </tr>
-    `).join('');
+  tbody.innerHTML = filtered.length === 0 ? '<tr><td colspan="7" style="text-align:center;color:#666;">لا توجد نتائج</td></tr>' : filtered.map(s => `<tr><td>${s.file_number||'-'}</td><td><strong>${s.full_name||'-'}</strong></td><td>${s.gender||'-'}</td><td>${s.stage||'-'}</td><td>${s.grade||'-'} ${s.section||''}</td><td><span class="badge badge-${s.status==='نشط'?'success':'warning'}">${s.status||'نشط'}</span></td><td><button class="btn btn-secondary btn-sm" onclick="showStudentForm('${s.id}')">تعديل</button> <button class="btn btn-danger btn-sm" onclick="deleteStudent('${s.id}')">حذف</button></td></tr>`).join('');
 }
 
 function showStudentForm(id = null) {
   const student = id ? state.data.students.find(s => s.id === id) : {};
   const content = `
-    <div class="form-group"><label>رقم الملف *</label><input id="s-file" value="${student.file_number || ''}" required></div>
-    <div class="form-group"><label>الاسم الكامل *</label><input id="s-name" value="${student.full_name || ''}" required></div>
-    <div class="form-group"><label>الجنس *</label><select id="s-gender"><option ${student.gender === 'ذكر' ? 'selected' : ''}>ذكر</option><option ${student.gender === 'أنثى' ? 'selected' : ''}>أنثى</option></select></div>
-    <div class="form-group"><label>المرحلة *</label><select id="s-stage"><option ${student.stage === 'ابتدائي' ? 'selected' : ''}>ابتدائي</option><option ${student.stage === 'إعدادي' ? 'selected' : ''}>إعدادي</option><option ${student.stage === 'ثانوي' ? 'selected' : ''}>ثانوي</option></select></div>
-    <div class="form-group"><label>الصف</label><input id="s-grade" value="${student.grade || ''}"></div>
-    <div class="form-group"><label>الشعبة</label><input id="s-section" value="${student.section || ''}"></div>
-    <div class="form-group"><label>الهاتف</label><input id="s-phone" value="${student.phone || ''}"></div>
-    <div class="form-group"><label>العنوان</label><input id="s-address" value="${student.address || ''}"></div>
-    <div class="form-group"><label>الحالة</label><select id="s-status"><option ${student.status === 'نشط' ? 'selected' : ''}>نشط</option><option ${student.status === 'متوقف' ? 'selected' : ''}>متوقف</option><option ${student.status === 'منقول' ? 'selected' : ''}>منقول</option></select></div>
-  `;
-  
-  showModal(id ? 'تعديل بيانات طالب' : 'إضافة طالب جديد', content, async () => {
-    const record = {
-      file_number: document.getElementById('s-file').value,
-      full_name: document.getElementById('s-name').value,
-      gender: document.getElementById('s-gender').value,
-      stage: document.getElementById('s-stage').value,
-      grade: document.getElementById('s-grade').value,
-      section: document.getElementById('s-section').value,
-      phone: document.getElementById('s-phone').value,
-      address: document.getElementById('s-address').value,
-      status: document.getElementById('s-status').value
-    };
-    
-    if (!record.file_number || !record.full_name) {
-      alert('يرجى ملء الحقول المطلوبة');
-      return;
-    }
-    
+    <div class="form-group"><label>رقم الملف *</label><input id="s-file" value="${student.file_number||''}" required></div>
+    <div class="form-group"><label>الاسم *</label><input id="s-name" value="${student.full_name||''}" required></div>
+    <div class="form-group"><label>الجنس *</label><select id="s-gender"><option ${student.gender==='ذكر'?'selected':''}>ذكر</option><option ${student.gender==='أنثى'?'selected':''}>أنثى</option></select></div>
+    <div class="form-group"><label>المرحلة *</label><select id="s-stage"><option ${student.stage==='ابتدائي'?'selected':''}>ابتدائي</option><option ${student.stage==='إعدادي'?'selected':''}>إعدادي</option><option ${student.stage==='ثانوي'?'selected':''}>ثانوي</option></select></div>
+    <div class="form-group"><label>الصف</label><input id="s-grade" value="${student.grade||''}"></div>
+    <div class="form-group"><label>الشعبة</label><input id="s-section" value="${student.section||''}"></div>
+    <div class="form-group"><label>الهاتف</label><input id="s-phone" value="${student.phone||''}"></div>
+    <div class="form-group"><label>الحالة</label><select id="s-status"><option ${student.status==='نشط'?'selected':''}>نشط</option><option ${student.status==='متوقف'?'selected':''}>متوقف</option></select></div>`;
+  showModal(id ? 'تعديل طالب' : 'إضافة طالب', content, async () => {
+    const record = { file_number: document.getElementById('s-file').value, full_name: document.getElementById('s-name').value, gender: document.getElementById('s-gender').value, stage: document.getElementById('s-stage').value, grade: document.getElementById('s-grade').value, section: document.getElementById('s-section').value, phone: document.getElementById('s-phone').value, status: document.getElementById('s-status').value };
+    if (!record.file_number || !record.full_name) { alert('يرجى ملء الحقول المطلوبة'); return; }
     const res = id ? await services.update('students', id, record) : await services.insert('students', record);
-    if (res.success) {
-      closeModal();
-      renderStudents();
-    } else {
-      alert('خطأ: ' + (res.error?.message || 'فشل الحفظ'));
-    }
+    if (res.success) { closeModal(); renderStudents(); } else { alert('خطأ: ' + (res.error?.message || 'فشل')); }
   });
 }
 
 async function deleteStudent(id) {
-  if (!confirm('هل أنت متأكد من حذف هذا الطالب؟')) return;
+  if (!confirm('هل أنت متأكد؟')) return;
   const res = await services.delete('students', id);
   if (res.success) renderStudents();
-  else alert('خطأ في الحذف: ' + (res.error?.message || ''));
 }
 
-async function renderGuardians() {
-  const res = await services.getAll('guardians');
-  const guardians = res.data || [];
-  document.getElementById('page-content').innerHTML = `
-    <div class="card">
-      <div class="card-header"><h3>👨‍👩‍ أولياء الأمور (${res.total})</h3></div>
-      <div class="table-container">
-        <table>
-          <thead><tr><th>الاسم</th><th>الصلة</th><th>الهاتف</th><th>العنوان</th></tr></thead>
-          <tbody>
-            ${guardians.length === 0 ? '<tr><td colspan="4" style="text-align:center;color:#666;padding:40px;">لا يوجد أولياء أمور</td></tr>' : ''}
-            ${guardians.map(g => `<tr><td><strong>${g.full_name}</strong></td><td>${g.relation || '-'}</td><td>${g.phone || '-'}</td><td>${g.address || '-'}</td></tr>`).join('')}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  `;
-}
+async function renderGuardians() { const res = await services.getAll('guardians'); const g = res.data || []; document.getElementById('page-content').innerHTML = `<div class="card"><div class="card-header"><h3>👨👩‍👧 أولياء الأمور (${res.total})</h3></div><div class="table-container"><table><thead><tr><th>الاسم</th><th>الصلة</th><th>الهاتف</th></tr></thead><tbody>${g.length===0?'<tr><td colspan="3" style="text-align:center;color:#666;padding:40px;">لا يوجد</td></tr>':g.map(x=>`<tr><td><strong>${x.full_name}</strong></td><td>${x.relation||'-'}</td><td>${x.phone||'-'}</td></tr>`).join('')}</tbody></table></div></div>`; }
 
-async function renderClasses() {
-  const res = await services.getAll('classes');
-  const classes = res.data || [];
-  document.getElementById('page-content').innerHTML = `
-    <div class="card">
-      <div class="card-header"><h3> الصفوف الدراسية (${res.total})</h3></div>
-      <div class="table-container">
-        <table>
-          <thead><tr><th>المرحلة</th><th>الصف</th><th>الشعبة</th><th>العام</th><th>السعة</th></tr></thead>
-          <tbody>
-            ${classes.length === 0 ? '<tr><td colspan="5" style="text-align:center;color:#666;padding:40px;">لا توجد صفوف</td></tr>' : ''}
-            ${classes.map(c => `<tr><td>${c.stage}</td><td>${c.grade}</td><td>${c.section}</td><td>${c.academic_year || '-'}</td><td>${c.capacity || 40}</td></tr>`).join('')}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  `;
-}
+async function renderClasses() { const res = await services.getAll('classes'); const c = res.data || []; document.getElementById('page-content').innerHTML = `<div class="card"><div class="card-header"><h3>🏫 الصفوف (${res.total})</h3></div><div class="table-container"><table><thead><tr><th>المرحلة</th><th>الصف</th><th>الشعبة</th></tr></thead><tbody>${c.length===0?'<tr><td colspan="3" style="text-align:center;color:#666;padding:40px;">لا يوجد</td></tr>':c.map(x=>`<tr><td>${x.stage}</td><td>${x.grade}</td><td>${x.section}</td></tr>`).join('')}</tbody></table></div></div>`; }
 
-async function renderAttendance() {
-  document.getElementById('page-content').innerHTML = `
-    <div class="card">
-      <div class="card-header"><h3>📋 الحضور والغياب</h3></div>
-      <p style="text-align:center;color:#666;padding:40px;">🚧 هذه الصفحة قيد التطوير</p>
-    </div>
-  `;
-}
+async function renderEmployees() { const res = await services.getAll('employees'); const e = res.data || []; document.getElementById('page-content').innerHTML = `<div class="card"><div class="card-header"><h3>👔 الموظفون (${res.total})</h3></div><div class="table-container"><table><thead><tr><th>الاسم</th><th>المنصب</th><th>القسم</th></tr></thead><tbody>${e.length===0?'<tr><td colspan="3" style="text-align:center;color:#666;padding:40px;">لا يوجد</td></tr>':e.map(x=>`<tr><td><strong>${x.full_name}</strong></td><td>${x.position||'-'}</td><td>${x.department||'-'}</td></tr>`).join('')}</tbody></table></div></div>`; }
 
-async function renderPerformance() {
-  document.getElementById('page-content').innerHTML = `
-    <div class="card">
-      <div class="card-header"><h3>📝 الأداء الأكاديمي</h3></div>
-      <p style="text-align:center;color:#666;padding:40px;">🚧 هذه الصفحة قيد التطوير</p>
-    </div>
-  `;
-}
-
-async function renderEmployees() {
-  const res = await services.getAll('employees');
-  const employees = res.data || [];
-  document.getElementById('page-content').innerHTML = `
-    <div class="card">
-      <div class="card-header"><h3>👔 الموظفون (${res.total})</h3></div>
-      <div class="table-container">
-        <table>
-          <thead><tr><th>الاسم</th><th>المنصب</th><th>القسم</th><th>الهاتف</th><th>الحالة</th></tr></thead>
-          <tbody>
-            ${employees.length === 0 ? '<tr><td colspan="5" style="text-align:center;color:#666;padding:40px;">لا يوجد موظفون</td></tr>' : ''}
-            ${employees.map(e => `<tr><td><strong>${e.full_name}</strong></td><td>${e.position || '-'}</td><td>${e.department || '-'}</td><td>${e.phone || '-'}</td><td><span class="badge badge-success">${e.status || 'نشط'}</span></td></tr>`).join('')}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  `;
-}
-
-async function renderWorkers() {
-  const res = await services.getAll('workers');
-  const workers = res.data || [];
-  document.getElementById('page-content').innerHTML = `
-    <div class="card">
-      <div class="card-header"><h3>🔧 العاملون (${res.total})</h3></div>
-      <div class="table-container">
-        <table>
-          <thead><tr><th>الاسم</th><th>المنصب</th><th>الهاتف</th><th>الفترة</th></tr></thead>
-          <tbody>
-            ${workers.length === 0 ? '<tr><td colspan="4" style="text-align:center;color:#666;padding:40px;">لا يوجد عاملون</td></tr>' : ''}
-            ${workers.map(w => `<tr><td><strong>${w.full_name}</strong></td><td>${w.position || '-'}</td><td>${w.phone || '-'}</td><td>${w.work_period || '-'}</td></tr>`).join('')}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  `;
-}
-
-async function renderBiscuit() {
-  document.getElementById('page-content').innerHTML = `
-    <div class="card">
-      <div class="card-header"><h3>🍪 مخزون البسكويت</h3></div>
-      <p style="text-align:center;color:#666;padding:40px;">🚧 قيد التطوير</p>
-    </div>
-  `;
-}
-
-async function renderReports() {
-  document.getElementById('page-content').innerHTML = `
-    <div class="card">
-      <div class="card-header"><h3>📄 التقارير</h3></div>
-      <p style="text-align:center;color:#666;padding:40px;">🚧 قيد التطوير</p>
-    </div>
-  `;
-}
+async function renderWorkers() { const res = await services.getAll('workers'); const w = res.data || []; document.getElementById('page-content').innerHTML = `<div class="card"><div class="card-header"><h3>🔧 العاملون (${res.total})</h3></div><div class="table-container"><table><thead><tr><th>الاسم</th><th>المنصب</th></tr></thead><tbody>${w.length===0?'<tr><td colspan="2" style="text-align:center;color:#666;padding:40px;">لا يوجد</td></tr>':w.map(x=>`<tr><td><strong>${x.full_name}</strong></td><td>${x.position||'-'}</td></tr>`).join('')}</tbody></table></div></div>`; }
 
 async function renderSettings() {
   document.getElementById('page-content').innerHTML = `
@@ -755,18 +372,17 @@ async function renderSettings() {
       <div class="card-header"><h3>⚙️ الإعدادات</h3></div>
       <div style="padding:20px;">
         <h4 style="margin-bottom:15px;">معلومات الحساب</h4>
-        <p><strong>الاسم:</strong> ${state.profile?.full_name || '-'}</p>
-        <p><strong>البريد:</strong> ${state.user?.email || '-'}</p>
-        <p><strong>الدور:</strong> ${getRoleName(state.profile?.role)}</p>
+        <p><strong>الاسم:</strong> ${state.profile?.full_name||'-'}</p>
+        <p><strong>البريد:</strong> ${state.user?.email||'-'}</p>
+        <p><strong>الدور:</strong> ${state.profile?.role||'-'}</p>
         <hr style="margin:20px 0;">
-        <h4 style="margin-bottom:15px;">إعدادات Supabase</h4>
-        <div class="form-group"><label>Supabase URL</label><input id="cfg-url" value="${SUPABASE_URL}"></div>
-        <div class="form-group"><label>Supabase Anon Key</label><input id="cfg-key" value="${SUPABASE_KEY}" type="password"></div>
-        <button class="btn btn-primary" style="width:auto;" onclick="saveSettings()">حفظ الإعدادات</button>
+        <h4 style="margin-bottom:15px;">Supabase</h4>
+        <div class="form-group"><label>URL</label><input id="cfg-url" value="${SUPABASE_URL}"></div>
+        <div class="form-group"><label>Anon Key</label><input id="cfg-key" value="${SUPABASE_KEY}" type="password"></div>
+        <button class="btn btn-primary" style="width:auto;" onclick="saveSettings()">حفظ</button>
         <button class="btn btn-danger" style="width:auto;margin-right:10px;" onclick="if(confirm('هل أنت متأكد؟')){localStorage.clear();location.reload();}">إعادة تعيين</button>
       </div>
-    </div>
-  `;
+    </div>`;
 }
 
 function saveSettings() {
@@ -775,7 +391,7 @@ function saveSettings() {
   if (!url || !key) { alert('يرجى ملء جميع الحقول'); return; }
   localStorage.setItem('SUPABASE_URL', url);
   localStorage.setItem('SUPABASE_KEY', key);
-  alert('تم حفظ الإعدادات. سيتم إعادة تحميل الصفحة...');
+  alert('تم الحفظ. سيتم إعادة التحميل...');
   location.reload();
 }
 
@@ -788,60 +404,31 @@ function saveSetup() {
   location.reload();
 }
 
-// ============================================
-// التهيئة - تبدأ مباشرة
-// ============================================
 async function init() {
-  if (!SUPABASE_URL || !SUPABASE_KEY) {
-    showLogin();
-    return;
-  }
-  
+  if (!SUPABASE_URL || !SUPABASE_KEY) { showLogin(); return; }
   try {
-    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
-      auth: { autoRefreshToken: true, persistSession: true }
-    });
-    
+    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { autoRefreshToken: true, persistSession: true } });
     const user = await auth.getCurrentUser();
-    if (user) {
-      state.user = user;
-      state.profile = await auth.getProfile(user.id);
-      if (!state.profile) {
-        state.profile = { full_name: user.email, role: 'user' };
-      }
-      showApp();
-    } else {
-      showLogin();
-    }
-  } catch (error) {
-    console.error('خطأ في التهيئة:', error);
-    showLogin();
-  }
+    if (user) { state.user = user; state.profile = await auth.getProfile(user.id); if (!state.profile) state.profile = { full_name: user.email, role: 'user' }; showApp(); }
+    else { showLogin(); }
+  } catch (error) { console.error(error); showLogin(); }
 }
 
-// ============================================
-// معالجات الأحداث
-// ============================================
 document.getElementById('login-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   const email = document.getElementById('login-email').value;
   const password = document.getElementById('login-password').value;
   const btn = document.getElementById('login-btn');
-  btn.disabled = true;
-  btn.textContent = ' جارٍ تسجيل الدخول...';
-  
+  btn.disabled = true; btn.textContent = 'جارٍ...';
   try {
     const data = await auth.login(email, password);
     state.user = data.user;
     state.profile = await auth.getProfile(data.user.id);
-    if (!state.profile) {
-      state.profile = { full_name: data.user.email, role: 'user' };
-    }
+    if (!state.profile) state.profile = { full_name: data.user.email, role: 'user' };
     showApp();
   } catch (error) {
-    showAlert('login-alert', '❌ خطأ في تسجيل الدخول: ' + (error.message || 'تحقق من البيانات'));
-    btn.disabled = false;
-    btn.textContent = ' تسجيل الدخول';
+    showAlert('login-alert', 'خطأ: ' + (error.message || 'تحقق من البيانات'));
+    btn.disabled = false; btn.textContent = '🔐 تسجيل الدخول';
   }
 });
 
@@ -854,31 +441,20 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
   const password = document.getElementById('reg-password').value;
   const password2 = document.getElementById('reg-password2').value;
   const btn = document.getElementById('register-btn');
-  
-  if (password !== password2) {
-    showAlert('register-alert', ' كلمة المرور غير متطابقة');
-    return;
-  }
-  
-  btn.disabled = true;
-  btn.textContent = '⏳ جارٍ إنشاء الحساب...';
-  
+  if (password !== password2) { showAlert('register-alert', 'كلمة المرور غير متطابقة'); return; }
+  btn.disabled = true; btn.textContent = 'جارٍ...';
   try {
     await auth.register(email, password, name, phone, role);
-    showAlert('register-alert', '✅ تم إنشاء الحساب بنجاح! يمكنك الآن تسجيل الدخول.', 'success');
+    showAlert('register-alert', '✅ تم إنشاء الحساب!', 'success');
     setTimeout(() => showLogin(), 2000);
   } catch (error) {
-    showAlert('register-alert', '❌ خطأ: ' + (error.message || 'فشل إنشاء الحساب'));
-    btn.disabled = false;
-    btn.textContent = '✨ إنشاء الحساب';
+    showAlert('register-alert', 'خطأ: ' + (error.message || 'فشل'));
+    btn.disabled = false; btn.textContent = '✨ إنشاء الحساب';
   }
 });
 
-document.querySelectorAll('.nav-item').forEach(item => {
-  item.addEventListener('click', () => navigateTo(item.dataset.page));
-});
+document.querySelectorAll('.nav-item').forEach(item => item.addEventListener('click', () => navigateTo(item.dataset.page)));
 
-// بدء التطبيق
 init();
 </script>
 </body>
