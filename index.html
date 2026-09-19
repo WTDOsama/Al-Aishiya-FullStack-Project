@@ -1,82 +1,809 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" data-theme="light" data-font-size="medium">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="نظام إدارة طلبة مدرسة العائشية دير البلح — منظومة مدرسية عربية متكاملة لإدارة الطلبة والحضور والأداء وتوزيع البسكويت">
-  <title>نظام إدارة طلبة مدرسة العائشية دير البلح</title>
-  <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><circle cx="48" cy="48" r="46" fill="%230b7a5c"/><path d="M48 30c-8.5 0-15.8 2.4-21.5 6.2V54c5.7-3.8 13-6.2 21.5-6.2s15.8 2.4 21.5 6.2V36.2C63.8 32.4 56.5 30 48 30z" fill="white"/><circle cx="48" cy="48" r="46" fill="none" stroke="%23d9a521" stroke-width="3"/></svg>'>
-  <link rel="preload" href="assets/fonts/cairo-400-arabic.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/app.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نظام إدارة طلبة مدرسة العائشية - دير البلح</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Arial, sans-serif; }
+body { background: #f5f7fa; color: #333; min-height: 100vh; }
+:root { --primary: #0d9488; --primary-dark: #0f766e; --danger: #dc2626; --success: #10b981; --warning: #f59e0b; --bg: #f5f7fa; --card: #fff; --text: #1f2937; --border: #e5e7eb; }
+.hidden { display: none !important; }
+
+/* Loading Screen */
+#loading-screen { position: fixed; inset: 0; background: #f5f7fa; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; }
+.logo-circle { width: 100px; height: 100px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; border: 4px solid #fbbf24; }
+.logo-circle svg { width: 60px; height: 60px; fill: white; }
+.spinner { width: 40px; height: 40px; border: 4px solid #e5e7eb; border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin-top: 20px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Login */
+.login-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%); padding: 20px; }
+.login-box { background: white; border-radius: 20px; padding: 40px; width: 100%; max-width: 420px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+.login-box h1 { text-align: center; color: var(--primary); margin-bottom: 10px; font-size: 22px; }
+.login-box p { text-align: center; color: #666; margin-bottom: 30px; font-size: 14px; }
+.form-group { margin-bottom: 18px; }
+.form-group label { display: block; margin-bottom: 6px; font-weight: 600; color: #374151; font-size: 14px; }
+.form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 14px; border: 2px solid var(--border); border-radius: 10px; font-size: 15px; transition: border-color 0.2s; }
+.form-group input:focus, .form-group select:focus { outline: none; border-color: var(--primary); }
+.btn { padding: 12px 24px; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.btn-primary { background: var(--primary); color: white; width: 100%; }
+.btn-primary:hover { background: var(--primary-dark); }
+.btn-secondary { background: #f3f4f6; color: #374151; }
+.btn-danger { background: var(--danger); color: white; }
+.btn-success { background: var(--success); color: white; }
+.alert { padding: 12px 16px; border-radius: 10px; margin-bottom: 15px; font-size: 14px; }
+.alert-error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+.alert-success { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+
+/* Main Layout */
+.app-container { display: flex; min-height: 100vh; }
+.sidebar { width: 260px; background: white; border-left: 1px solid var(--border); padding: 20px 0; position: fixed; right: 0; top: 0; bottom: 0; overflow-y: auto; }
+.sidebar-header { padding: 0 20px 20px; border-bottom: 1px solid var(--border); margin-bottom: 15px; }
+.sidebar-header h2 { color: var(--primary); font-size: 16px; }
+.sidebar-header p { color: #666; font-size: 12px; margin-top: 4px; }
+.nav-item { padding: 12px 20px; cursor: pointer; display: flex; align-items: center; gap: 10px; color: #4b5563; transition: all 0.2s; border-right: 3px solid transparent; }
+.nav-item:hover { background: #f3f4f6; }
+.nav-item.active { background: #f0fdfa; color: var(--primary); border-right-color: var(--primary); font-weight: 600; }
+.nav-item .icon { font-size: 18px; }
+.main-content { flex: 1; margin-right: 260px; padding: 30px; }
+.top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; background: white; padding: 15px 20px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+.user-info { display: flex; align-items: center; gap: 10px; }
+.user-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+
+/* Cards & Stats */
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 18px; margin-bottom: 25px; }
+.stat-card { background: white; padding: 22px; border-radius: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-right: 4px solid var(--primary); }
+.stat-card .label { color: #6b7280; font-size: 13px; margin-bottom: 8px; }
+.stat-card .value { font-size: 28px; font-weight: bold; color: var(--text); }
+.stat-card.male { border-right-color: #3b82f6; }
+.stat-card.female { border-right-color: #ec4899; }
+.stat-card.warning { border-right-color: var(--warning); }
+
+/* Tables */
+.card { background: white; border-radius: 14px; padding: 22px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 20px; }
+.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 10px; }
+.card-header h3 { color: var(--text); font-size: 18px; }
+.table-container { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 12px 14px; text-align: right; border-bottom: 1px solid var(--border); font-size: 14px; }
+th { background: #f9fafb; font-weight: 600; color: #374151; }
+tr:hover { background: #f9fafb; }
+.badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.badge-success { background: #d1fae5; color: #065f46; }
+.badge-danger { background: #fee2e2; color: #991b1b; }
+.badge-warning { background: #fef3c7; color: #92400e; }
+.badge-info { background: #dbeafe; color: #1e40af; }
+
+/* Modal */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
+.modal { background: white; border-radius: 16px; padding: 30px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; }
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.modal-header h3 { color: var(--text); }
+.close-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: #6b7280; }
+.modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+
+/* Search & Filters */
+.toolbar { display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; }
+.search-box { flex: 1; min-width: 200px; position: relative; }
+.search-box input { width: 100%; padding: 10px 14px; border: 2px solid var(--border); border-radius: 10px; font-size: 14px; }
+.filter-select { padding: 10px 14px; border: 2px solid var(--border); border-radius: 10px; font-size: 14px; background: white; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar { transform: translateX(100%); transition: transform 0.3s; z-index: 100; }
+  .sidebar.open { transform: translateX(0); }
+  .main-content { margin-right: 0; padding: 15px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
 </head>
 <body>
 
-  <!-- شاشة التحميل الأولية -->
-  <div id="app">
-    <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.1rem">
-      <div style="width:88px;height:88px">
-        <svg viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="48" cy="48" r="46" fill="#0b7a5c"/>
-          <circle cx="48" cy="48" r="46" fill="none" stroke="#d9a521" stroke-width="2.5"/>
-          <path d="M48 33c-8.5 0-15.8 2.4-21.5 6.2V57c5.7-3.8 13-6.2 21.5-6.2s15.8 2.4 21.5 6.2V39.2C63.8 35.4 56.5 33 48 33z" fill="#fdfcf7"/>
-          <path d="M48 20.5c2.6 3.6 4.4 7.3 5.1 11h-10.2c.7-3.7 2.5-7.4 5.1-11z" fill="#d9a521"/>
-        </svg>
-      </div>
-      <div style="font-weight:800;font-size:1.2rem">نظام إدارة طلبة مدرسة العائشية دير البلح</div>
-      <div style="display:flex;align-items:center;gap:.7rem;color:#5f736c">
-        <div class="spinner"></div>
-        <span style="font-weight:700">جارٍ تحميل النظام…</span>
-      </div>
-    </div>
+<!-- شاشة التحميل -->
+<div id="loading-screen">
+  <div class="logo-circle">
+    <svg viewBox="0 0 24 24"><path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/></svg>
   </div>
+  <h2 style="color: #0d9488; margin-bottom: 10px;">نظام إدارة طلبة مدرسة العائشية دير البلح</h2>
+  <p style="color: #666;">جارٍ تحميل النظام...</p>
+  <div class="spinner"></div>
+</div>
 
-  <div id="dialog-root"></div>
-  <div id="toast-root"></div>
-  <div id="print-root"></div>
-
-  <noscript>
-    <div style="padding:3rem;text-align:center;font-weight:800">
-      نظام إدارة طلبة مدرسة العائشية دير البلح يتطلب تفعيل JavaScript في المتصفح.
+<!-- صفحة تسجيل الدخول -->
+<div id="login-page" class="login-container hidden">
+  <div class="login-box">
+    <div class="logo-circle" style="margin: 0 auto 20px;">
+      <svg viewBox="0 0 24 24" style="width:50px;height:50px;fill:white;"><path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3z"/></svg>
     </div>
-  </noscript>
+    <h1>نظام إدارة طلبة مدرسة العائشية</h1>
+    <p>دير البلح - تسجيل الدخول</p>
+    <div id="login-alert"></div>
+    <form id="login-form">
+      <div class="form-group">
+        <label>البريد الإلكتروني</label>
+        <input type="email" id="login-email" required placeholder="admin@alaishiya.edu.ps">
+      </div>
+      <div class="form-group">
+        <label>كلمة المرور</label>
+        <input type="password" id="login-password" required placeholder="••••••••">
+      </div>
+      <button type="submit" class="btn btn-primary">تسجيل الدخول</button>
+    </form>
+    <p style="margin-top:20px;font-size:12px;color:#999;text-align:center;">
+      للتجربة: admin@alaishiya.edu.ps / Admin@123456
+    </p>
+  </div>
+</div>
 
-  <!-- المكتبات المحلية -->
-  <script src="assets/js/vendor/chart.umd.min.js"></script>
-  <script src="assets/js/vendor/qrcode.min.js"></script>
-  <script src="assets/js/vendor/jsQR.js"></script>
-  <script src="assets/js/vendor/xlsx.full.min.js"></script>
+<!-- التطبيق الرئيسي -->
+<div id="app" class="app-container hidden">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <h2>🏫 مدرسة العائشية</h2>
+      <p id="user-role-display">مدير النظام</p>
+    </div>
+    <nav>
+      <div class="nav-item active" data-page="dashboard"><span class="icon">📊</span> لوحة التحكم</div>
+      <div class="nav-item" data-page="students"><span class="icon">‍🎓</span> الطلبة</div>
+      <div class="nav-item" data-page="guardians"><span class="icon">‍👩‍👧</span> أولياء الأمور</div>
+      <div class="nav-item" data-page="classes"><span class="icon">🏫</span> الصفوف</div>
+      <div class="nav-item" data-page="attendance"><span class="icon">📋</span> الحضور</div>
+      <div class="nav-item" data-page="performance"><span class="icon"></span> الأداء الأكاديمي</div>
+      <div class="nav-item" data-page="employees"><span class="icon">👔</span> الموظفون</div>
+      <div class="nav-item" data-page="workers"><span class="icon">🔧</span> العاملون</div>
+      <div class="nav-item" data-page="biscuit"><span class="icon">🍪</span> البسكويت</div>
+      <div class="nav-item" data-page="reports"><span class="icon"></span> التقارير</div>
+      <div class="nav-item" data-page="settings"><span class="icon">⚙️</span> الإعدادات</div>
+      <div class="nav-item" data-page="logout" style="margin-top:20px;color:var(--danger);"><span class="icon">🚪</span> تسجيل الخروج</div>
+    </nav>
+  </aside>
+  
+  <main class="main-content">
+    <div class="top-bar">
+      <div>
+        <h2 id="page-title">لوحة التحكم</h2>
+        <p style="color:#666;font-size:13px;" id="current-date"></p>
+      </div>
+      <div class="user-info">
+        <div class="user-avatar" id="user-avatar">م</div>
+        <div>
+          <div style="font-weight:600;" id="user-name">مستخدم</div>
+          <div style="font-size:12px;color:#666;" id="user-email">email@example.com</div>
+        </div>
+      </div>
+    </div>
+    <div id="page-content"></div>
+  </main>
+</div>
 
-  <!-- نواة النظام -->
-  <script src="assets/js/config.js"></script>
-  <script src="assets/js/utils.js"></script>
-  <script src="assets/js/store.js"></script>
-  <script src="assets/js/auth.js"></script>
-  <script src="assets/js/ui.js"></script>
-  <script src="assets/js/qrutil.js"></script>
-  <script src="assets/js/charts.js"></script>
-  <script src="assets/js/crudFactory.js"></script>
+<!-- Modal Container -->
+<div id="modal-container"></div>
 
-  <!-- الصفحات -->
-  <script src="assets/js/views/login.js"></script>
-  <script src="assets/js/views/dashboard.js"></script>
-  <script src="assets/js/views/students.js"></script>
-  <script src="assets/js/views/studentProfile.js"></script>
-  <script src="assets/js/views/guardians.js"></script>
-  <script src="assets/js/views/classes.js"></script>
-  <script src="assets/js/views/attendance.js"></script>
-  <script src="assets/js/views/performance.js"></script>
-  <script src="assets/js/views/biscuits.js"></script>
-  <script src="assets/js/views/school.js"></script>
-  <script src="assets/js/views/workers.js"></script>
-  <script src="assets/js/views/qrReader.js"></script>
-  <script src="assets/js/views/importExport.js"></script>
-  <script src="assets/js/views/reports.js"></script>
-  <script src="assets/js/views/notifications.js"></script>
-  <script src="assets/js/views/activity.js"></script>
-  <script src="assets/js/views/social.js"></script>
-  <script src="assets/js/views/settings.js"></script>
+<script>
+// ============================================
+// تهيئة Supabase
+// ============================================
+const SUPABASE_URL = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_URL) 
+  || localStorage.getItem('SUPABASE_URL') 
+  || 'https://YOUR_PROJECT.supabase.co';
+const SUPABASE_KEY = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_ANON_KEY) 
+  || localStorage.getItem('SUPABASE_KEY') 
+  || 'YOUR_ANON_KEY';
 
-  <!-- التهيئة -->
-  <script src="assets/js/app.js"></script>
+let supabase;
+try {
+  supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+    auth: { autoRefreshToken: true, persistSession: true }
+  });
+} catch(e) {
+  console.error('خطأ في تهيئة Supabase:', e);
+}
+
+// ============================================
+// حالة التطبيق
+// ============================================
+const state = {
+  user: null,
+  profile: null,
+  currentPage: 'dashboard',
+  data: {
+    students: [],
+    guardians: [],
+    classes: [],
+    attendance: [],
+    performance: [],
+    employees: [],
+    workers: [],
+    biscuit: []
+  }
+};
+
+// ============================================
+// خدمات البيانات
+// ============================================
+const services = {
+  async getAll(table, filters = {}) {
+    try {
+      let query = supabase.from(table).select('*', { count: 'exact' });
+      if (filters.search && filters.searchField) {
+        query = query.ilike(filters.searchField, `%${filters.search}%`);
+      }
+      const { data, error, count } = await query.order('created_at', { ascending: false });
+      if (error) throw error;
+      return { success: true, data: data || [], total: count || 0 };
+    } catch (error) {
+      console.error(`خطأ في تحميل ${table}:`, error);
+      return { success: false, data: [], total: 0, error };
+    }
+  },
+  async insert(table, record) {
+    try {
+      const { data, error } = await supabase.from(table).insert(record).select().single();
+      if (error) throw error;
+      return { success: true, data };
+    } catch (error) {
+      return { success: false, error };
+    }
+  },
+  async update(table, id, record) {
+    try {
+      const { data, error } = await supabase.from(table).update(record).eq('id', id).select().single();
+      if (error) throw error;
+      return { success: true, data };
+    } catch (error) {
+      return { success: false, error };
+    }
+  },
+  async delete(table, id) {
+    try {
+      const { error } = await supabase.from(table).delete().eq('id', id);
+      if (error) throw error;
+      return { success: true };
+    } catch (error) {
+      return { success: false, error };
+    }
+  }
+};
+
+// ============================================
+// المصادقة
+// ============================================
+const auth = {
+  async login(email, password) {
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+    return data;
+  },
+  async logout() {
+    await supabase.auth.signOut();
+    state.user = null;
+    state.profile = null;
+    showLogin();
+  },
+  async getCurrentUser() {
+    const { data: { user } } = await supabase.auth.getUser();
+    return user;
+  },
+  async getProfile(userId) {
+    const { data } = await supabase.from('profiles').select('*').eq('id', userId).single();
+    return data;
+  }
+};
+
+// ============================================
+// واجهة المستخدم
+// ============================================
+function showLoading() {
+  document.getElementById('loading-screen').classList.remove('hidden');
+  document.getElementById('login-page').classList.add('hidden');
+  document.getElementById('app').classList.add('hidden');
+}
+
+function showLogin() {
+  document.getElementById('loading-screen').classList.add('hidden');
+  document.getElementById('login-page').classList.remove('hidden');
+  document.getElementById('app').classList.add('hidden');
+}
+
+function showApp() {
+  document.getElementById('loading-screen').classList.add('hidden');
+  document.getElementById('login-page').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  document.getElementById('user-name').textContent = state.profile?.full_name || 'مستخدم';
+  document.getElementById('user-email').textContent = state.user?.email || '';
+  document.getElementById('user-role-display').textContent = getRoleName(state.profile?.role);
+  document.getElementById('user-avatar').textContent = (state.profile?.full_name || 'م')[0];
+  document.getElementById('current-date').textContent = new Date().toLocaleDateString('ar-PS', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  navigateTo('dashboard');
+}
+
+function getRoleName(role) {
+  const roles = { admin: 'مدير النظام', school_manager: 'مدير المدرسة', teacher: 'معلم', employee: 'موظف', user: 'مستخدم' };
+  return roles[role] || 'مستخدم';
+}
+
+function showAlert(containerId, message, type = 'error') {
+  const container = document.getElementById(containerId);
+  container.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+  setTimeout(() => container.innerHTML = '', 5000);
+}
+
+function showModal(title, content, onSave) {
+  const container = document.getElementById('modal-container');
+  container.innerHTML = `
+    <div class="modal-overlay" onclick="if(event.target===this)closeModal()">
+      <div class="modal">
+        <div class="modal-header">
+          <h3>${title}</h3>
+          <button class="close-btn" onclick="closeModal()">×</button>
+        </div>
+        <div id="modal-content">${content}</div>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" onclick="closeModal()">إلغاء</button>
+          <button class="btn btn-primary" id="modal-save-btn">حفظ</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.getElementById('modal-save-btn').onclick = onSave;
+}
+
+function closeModal() {
+  document.getElementById('modal-container').innerHTML = '';
+}
+
+// ============================================
+// التنقل بين الصفحات
+// ============================================
+function navigateTo(page) {
+  state.currentPage = page;
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.classList.toggle('active', item.dataset.page === page);
+  });
+  
+  const titles = {
+    dashboard: 'لوحة التحكم', students: 'إدارة الطلبة', guardians: 'أولياء الأمور',
+    classes: 'الصفوف الدراسية', attendance: 'الحضور والغياب', performance: 'الأداء الأكاديمي',
+    employees: 'الموظفون', workers: 'العاملون', biscuit: 'مخزون البسكويت',
+    reports: 'التقارير', settings: 'الإعدادات'
+  };
+  document.getElementById('page-title').textContent = titles[page] || page;
+  
+  const content = document.getElementById('page-content');
+  content.innerHTML = '<div style="text-align:center;padding:40px;"><div class="spinner" style="margin:0 auto;"></div></div>';
+  
+  const renderers = {
+    dashboard: renderDashboard, students: renderStudents, guardians: renderGuardians,
+    classes: renderClasses, attendance: renderAttendance, performance: renderPerformance,
+    employees: renderEmployees, workers: renderWorkers, biscuit: renderBiscuit,
+    reports: renderReports, settings: renderSettings, logout: () => auth.logout()
+  };
+  
+  if (renderers[page]) renderers[page]();
+}
+
+// ============================================
+// صفحات التطبيق
+// ============================================
+
+async function renderDashboard() {
+  const content = document.getElementById('page-content');
+  try {
+    const [studentsRes, classesRes, employeesRes, workersRes] = await Promise.all([
+      services.getAll('students'),
+      services.getAll('classes'),
+      services.getAll('employees'),
+      services.getAll('workers')
+    ]);
+    
+    const students = studentsRes.data || [];
+    const male = students.filter(s => s.gender === 'ذكر').length;
+    const female = students.filter(s => s.gender === 'أنثى').length;
+    
+    content.innerHTML = `
+      <div class="stats-grid">
+        <div class="stat-card"><div class="label">إجمالي الطلبة</div><div class="value">${studentsRes.total}</div></div>
+        <div class="stat-card male"><div class="label">الذكور</div><div class="value">${male}</div></div>
+        <div class="stat-card female"><div class="label">الإناث</div><div class="value">${female}</div></div>
+        <div class="stat-card"><div class="label">الصفوف</div><div class="value">${classesRes.total}</div></div>
+        <div class="stat-card"><div class="label">الموظفون</div><div class="value">${employeesRes.total}</div></div>
+        <div class="stat-card"><div class="label">العاملون</div><div class="value">${workersRes.total}</div></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h3>📊 توزيع الطلبة حسب المرحلة</h3></div>
+        <div style="height:300px;"><canvas id="stageChart"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h3>🎯 آخر النشاطات</h3></div>
+        <p style="color:#666;text-align:center;padding:20px;">لا توجد نشاطات مسجلة بعد. ابدأ بإضافة طالب جديد!</p>
+      </div>
+    `;
+    
+    // رسم بياني
+    setTimeout(() => {
+      const ctx = document.getElementById('stageChart');
+      if (ctx && window.Chart) {
+        new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+            labels: ['ابتدائي', 'إعدادي', 'ثانوي'],
+            datasets: [{
+              data: [
+                students.filter(s => s.stage === 'ابتدائي').length,
+                students.filter(s => s.stage === 'إعدادي').length,
+                students.filter(s => s.stage === 'ثانوي').length
+              ],
+              backgroundColor: ['#0d9488', '#3b82f6', '#f59e0b']
+            }]
+          },
+          options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+        });
+      }
+    }, 100);
+  } catch (error) {
+    content.innerHTML = `<div class="card"><div class="alert alert-error">خطأ في تحميل البيانات: ${error.message}</div></div>`;
+  }
+}
+
+async function renderStudents() {
+  const content = document.getElementById('page-content');
+  const res = await services.getAll('students');
+  const students = res.data || [];
+  
+  content.innerHTML = `
+    <div class="card">
+      <div class="card-header">
+        <h3>👨‍🎓 قائمة الطلبة (${res.total})</h3>
+        <button class="btn btn-primary" onclick="showStudentForm()" style="width:auto;">+ إضافة طالب</button>
+      </div>
+      <div class="toolbar">
+        <div class="search-box">
+          <input type="text" id="student-search" placeholder="🔍 بحث بالاسم أو رقم الملف..." oninput="filterStudents()">
+        </div>
+        <select class="filter-select" id="stage-filter" onchange="filterStudents()">
+          <option value="">كل المراحل</option>
+          <option>ابتدائي</option><option>إعدادي</option><option>ثانوي</option>
+        </select>
+        <select class="filter-select" id="gender-filter" onchange="filterStudents()">
+          <option value="">كل الجنسين</option>
+          <option>ذكر</option><option>أنثى</option>
+        </select>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead><tr><th>رقم الملف</th><th>الاسم</th><th>الجنس</th><th>المرحلة</th><th>الصف</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+          <tbody id="students-tbody">
+            ${students.length === 0 ? '<tr><td colspan="7" style="text-align:center;color:#666;">لا يوجد طلبة. اضغط "إضافة طالب" للبدء.</td></tr>' : ''}
+            ${students.map(s => `
+              <tr>
+                <td>${s.file_number || '-'}</td>
+                <td><strong>${s.full_name || '-'}</strong></td>
+                <td>${s.gender || '-'}</td>
+                <td>${s.stage || '-'}</td>
+                <td>${s.grade || '-'} ${s.section || ''}</td>
+                <td><span class="badge badge-${s.status === 'نشط' ? 'success' : 'warning'}">${s.status || 'نشط'}</span></td>
+                <td>
+                  <button class="btn btn-secondary" style="padding:6px 12px;font-size:12px;" onclick="showStudentForm('${s.id}')">تعديل</button>
+                  <button class="btn btn-danger" style="padding:6px 12px;font-size:12px;" onclick="deleteStudent('${s.id}')">حذف</button>
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+  state.data.students = students;
+}
+
+function filterStudents() {
+  const search = document.getElementById('student-search').value.toLowerCase();
+  const stage = document.getElementById('stage-filter').value;
+  const gender = document.getElementById('gender-filter').value;
+  
+  const filtered = state.data.students.filter(s => {
+    const matchSearch = !search || (s.full_name || '').toLowerCase().includes(search) || (s.file_number || '').includes(search);
+    const matchStage = !stage || s.stage === stage;
+    const matchGender = !gender || s.gender === gender;
+    return matchSearch && matchStage && matchGender;
+  });
+  
+  const tbody = document.getElementById('students-tbody');
+  tbody.innerHTML = filtered.length === 0 
+    ? '<tr><td colspan="7" style="text-align:center;color:#666;">لا توجد نتائج</td></tr>'
+    : filtered.map(s => `
+      <tr>
+        <td>${s.file_number || '-'}</td>
+        <td><strong>${s.full_name || '-'}</strong></td>
+        <td>${s.gender || '-'}</td>
+        <td>${s.stage || '-'}</td>
+        <td>${s.grade || '-'} ${s.section || ''}</td>
+        <td><span class="badge badge-${s.status === 'نشط' ? 'success' : 'warning'}">${s.status || 'نشط'}</span></td>
+        <td>
+          <button class="btn btn-secondary" style="padding:6px 12px;font-size:12px;" onclick="showStudentForm('${s.id}')">تعديل</button>
+          <button class="btn btn-danger" style="padding:6px 12px;font-size:12px;" onclick="deleteStudent('${s.id}')">حذف</button>
+        </td>
+      </tr>
+    `).join('');
+}
+
+function showStudentForm(id = null) {
+  const student = id ? state.data.students.find(s => s.id === id) : {};
+  const content = `
+    <div class="form-group"><label>رقم الملف *</label><input id="s-file" value="${student.file_number || ''}" required></div>
+    <div class="form-group"><label>الاسم الكامل *</label><input id="s-name" value="${student.full_name || ''}" required></div>
+    <div class="form-group"><label>الجنس *</label>
+      <select id="s-gender"><option ${student.gender === 'ذكر' ? 'selected' : ''}>ذكر</option><option ${student.gender === 'أنثى' ? 'selected' : ''}>أنثى</option></select>
+    </div>
+    <div class="form-group"><label>المرحلة *</label>
+      <select id="s-stage"><option ${student.stage === 'ابتدائي' ? 'selected' : ''}>ابتدائي</option><option ${student.stage === 'إعدادي' ? 'selected' : ''}>إعدادي</option><option ${student.stage === 'ثانوي' ? 'selected' : ''}>ثانوي</option></select>
+    </div>
+    <div class="form-group"><label>الصف</label><input id="s-grade" value="${student.grade || ''}"></div>
+    <div class="form-group"><label>الشعبة</label><input id="s-section" value="${student.section || ''}"></div>
+    <div class="form-group"><label>الهاتف</label><input id="s-phone" value="${student.phone || ''}"></div>
+    <div class="form-group"><label>العنوان</label><input id="s-address" value="${student.address || ''}"></div>
+    <div class="form-group"><label>الحالة</label>
+      <select id="s-status"><option ${student.status === 'نشط' ? 'selected' : ''}>نشط</option><option ${student.status === 'متوقف' ? 'selected' : ''}>متوقف</option><option ${student.status === 'منقول' ? 'selected' : ''}>منقول</option></select>
+    </div>
+  `;
+  
+  showModal(id ? 'تعديل بيانات طالب' : 'إضافة طالب جديد', content, async () => {
+    const record = {
+      file_number: document.getElementById('s-file').value,
+      full_name: document.getElementById('s-name').value,
+      gender: document.getElementById('s-gender').value,
+      stage: document.getElementById('s-stage').value,
+      grade: document.getElementById('s-grade').value,
+      section: document.getElementById('s-section').value,
+      phone: document.getElementById('s-phone').value,
+      address: document.getElementById('s-address').value,
+      status: document.getElementById('s-status').value
+    };
+    
+    if (!record.file_number || !record.full_name) {
+      alert('يرجى ملء الحقول المطلوبة');
+      return;
+    }
+    
+    const res = id ? await services.update('students', id, record) : await services.insert('students', record);
+    if (res.success) {
+      closeModal();
+      renderStudents();
+    } else {
+      alert('خطأ: ' + (res.error?.message || 'فشل الحفظ'));
+    }
+  });
+}
+
+async function deleteStudent(id) {
+  if (!confirm('هل أنت متأكد من حذف هذا الطالب؟')) return;
+  const res = await services.delete('students', id);
+  if (res.success) renderStudents();
+  else alert('خطأ في الحذف: ' + (res.error?.message || ''));
+}
+
+async function renderGuardians() {
+  const res = await services.getAll('guardians');
+  const guardians = res.data || [];
+  document.getElementById('page-content').innerHTML = `
+    <div class="card">
+      <div class="card-header">
+        <h3>👨‍👩‍👧 أولياء الأمور (${res.total})</h3>
+        <button class="btn btn-primary" style="width:auto;" onclick="alert('قيد التطوير')">+ إضافة ولي أمر</button>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead><tr><th>الاسم</th><th>الصلة</th><th>الهاتف</th><th>العنوان</th></tr></thead>
+          <tbody>
+            ${guardians.length === 0 ? '<tr><td colspan="4" style="text-align:center;color:#666;">لا يوجد أولياء أمور</td></tr>' : ''}
+            ${guardians.map(g => `<tr><td><strong>${g.full_name}</strong></td><td>${g.relation || '-'}</td><td>${g.phone || '-'}</td><td>${g.address || '-'}</td></tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+async function renderClasses() {
+  const res = await services.getAll('classes');
+  const classes = res.data || [];
+  document.getElementById('page-content').innerHTML = `
+    <div class="card">
+      <div class="card-header"><h3>🏫 الصفوف الدراسية (${res.total})</h3></div>
+      <div class="table-container">
+        <table>
+          <thead><tr><th>المرحلة</th><th>الصف</th><th>الشعبة</th><th>العام الدراسي</th><th>السعة</th></tr></thead>
+          <tbody>
+            ${classes.length === 0 ? '<tr><td colspan="5" style="text-align:center;color:#666;">لا توجد صفوف</td></tr>' : ''}
+            ${classes.map(c => `<tr><td>${c.stage}</td><td>${c.grade}</td><td>${c.section}</td><td>${c.academic_year || '-'}</td><td>${c.capacity || 40}</td></tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+async function renderAttendance() {
+  document.getElementById('page-content').innerHTML = `
+    <div class="card">
+      <div class="card-header"><h3> الحضور والغياب</h3></div>
+      <p style="text-align:center;color:#666;padding:40px;"> هذه الصفحة قيد التطوير - سيتم تفعيلها قريباً</p>
+    </div>
+  `;
+}
+
+async function renderPerformance() {
+  document.getElementById('page-content').innerHTML = `
+    <div class="card">
+      <div class="card-header"><h3> الأداء الأكاديمي</h3></div>
+      <p style="text-align:center;color:#666;padding:40px;"> هذه الصفحة قيد التطوير - سيتم تفعيلها قريباً</p>
+    </div>
+  `;
+}
+
+async function renderEmployees() {
+  const res = await services.getAll('employees');
+  const employees = res.data || [];
+  document.getElementById('page-content').innerHTML = `
+    <div class="card">
+      <div class="card-header"><h3>👔 الموظفون (${res.total})</h3></div>
+      <div class="table-container">
+        <table>
+          <thead><tr><th>الاسم</th><th>المنصب</th><th>القسم</th><th>الهاتف</th><th>الحالة</th></tr></thead>
+          <tbody>
+            ${employees.length === 0 ? '<tr><td colspan="5" style="text-align:center;color:#666;">لا يوجد موظفون</td></tr>' : ''}
+            ${employees.map(e => `<tr><td><strong>${e.full_name}</strong></td><td>${e.position || '-'}</td><td>${e.department || '-'}</td><td>${e.phone || '-'}</td><td><span class="badge badge-success">${e.status || 'نشط'}</span></td></tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+async function renderWorkers() {
+  const res = await services.getAll('workers');
+  const workers = res.data || [];
+  document.getElementById('page-content').innerHTML = `
+    <div class="card">
+      <div class="card-header"><h3> العاملون (${res.total})</h3></div>
+      <div class="table-container">
+        <table>
+          <thead><tr><th>الاسم</th><th>المنصب</th><th>الهاتف</th><th>الفترة</th></tr></thead>
+          <tbody>
+            ${workers.length === 0 ? '<tr><td colspan="4" style="text-align:center;color:#666;">لا يوجد عاملون</td></tr>' : ''}
+            ${workers.map(w => `<tr><td><strong>${w.full_name}</strong></td><td>${w.position || '-'}</td><td>${w.phone || '-'}</td><td>${w.work_period || '-'}</td></tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+async function renderBiscuit() {
+  document.getElementById('page-content').innerHTML = `
+    <div class="card">
+      <div class="card-header"><h3>🍪 مخزون البسكويت</h3></div>
+      <p style="text-align:center;color:#666;padding:40px;">🚧 هذه الصفحة قيد التطوير</p>
+    </div>
+  `;
+}
+
+async function renderReports() {
+  document.getElementById('page-content').innerHTML = `
+    <div class="card">
+      <div class="card-header"><h3>📄 التقارير</h3></div>
+      <p style="text-align:center;color:#666;padding:40px;">🚧 هذه الصفحة قيد التطوير</p>
+    </div>
+  `;
+}
+
+async function renderSettings() {
+  document.getElementById('page-content').innerHTML = `
+    <div class="card">
+      <div class="card-header"><h3>⚙️ الإعدادات</h3></div>
+      <div style="padding:20px;">
+        <h4 style="margin-bottom:15px;">معلومات الحساب</h4>
+        <p><strong>الاسم:</strong> ${state.profile?.full_name || '-'}</p>
+        <p><strong>البريد:</strong> ${state.user?.email || '-'}</p>
+        <p><strong>الدور:</strong> ${getRoleName(state.profile?.role)}</p>
+        <hr style="margin:20px 0;">
+        <h4 style="margin-bottom:15px;">إعدادات Supabase</h4>
+        <div class="form-group"><label>Supabase URL</label><input id="cfg-url" value="${SUPABASE_URL}"></div>
+        <div class="form-group"><label>Supabase Anon Key</label><input id="cfg-key" value="${SUPABASE_KEY}" type="password"></div>
+        <button class="btn btn-primary" style="width:auto;" onclick="saveSettings()">حفظ الإعدادات</button>
+      </div>
+    </div>
+  `;
+}
+
+function saveSettings() {
+  const url = document.getElementById('cfg-url').value;
+  const key = document.getElementById('cfg-key').value;
+  localStorage.setItem('SUPABASE_URL', url);
+  localStorage.setItem('SUPABASE_KEY', key);
+  alert('تم حفظ الإعدادات. يرجى إعادة تحميل الصفحة.');
+  location.reload();
+}
+
+// ============================================
+// التهيئة
+// ============================================
+async function init() {
+  showLoading();
+  
+  // التحقق من Supabase
+  if (SUPABASE_URL.includes('YOUR_PROJECT') || SUPABASE_KEY.includes('YOUR_ANON_KEY')) {
+    document.getElementById('loading-screen').innerHTML = `
+      <div style="text-align:center;padding:40px;max-width:600px;">
+        <h2 style="color:#dc2626;margin-bottom:20px;">⚠️ لم يتم إعداد Supabase</h2>
+        <p style="color:#666;margin-bottom:20px;">يرجى إضافة بيانات Supabase في الإعدادات:</p>
+        <div class="form-group"><label>Supabase URL</label><input id="init-url" placeholder="https://xxxxx.supabase.co"></div>
+        <div class="form-group"><label>Anon Key</label><input id="init-key" placeholder="eyJ..."></div>
+        <button class="btn btn-primary" onclick="saveInitSettings()">حفظ والمتابعة</button>
+        <p style="margin-top:20px;font-size:13px;color:#999;">
+          احصل على هذه البيانات من: supabase.com → Project Settings → API
+        </p>
+      </div>
+    `;
+    return;
+  }
+  
+  try {
+    const user = await auth.getCurrentUser();
+    if (user) {
+      state.user = user;
+      state.profile = await auth.getProfile(user.id);
+      showApp();
+    } else {
+      showLogin();
+    }
+  } catch (error) {
+    console.error('خطأ في التهيئة:', error);
+    showLogin();
+  }
+}
+
+function saveInitSettings() {
+  const url = document.getElementById('init-url').value;
+  const key = document.getElementById('init-key').value;
+  if (!url || !key) { alert('يرجى ملء جميع الحقول'); return; }
+  localStorage.setItem('SUPABASE_URL', url);
+  localStorage.setItem('SUPABASE_KEY', key);
+  location.reload();
+}
+
+// ============================================
+// معالجات الأحداث
+// ============================================
+document.getElementById('login-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('login-email').value;
+  const password = document.getElementById('login-password').value;
+  const btn = e.target.querySelector('button');
+  btn.disabled = true;
+  btn.textContent = 'جارٍ تسجيل الدخول...';
+  
+  try {
+    const data = await auth.login(email, password);
+    state.user = data.user;
+    state.profile = await auth.getProfile(data.user.id);
+    showApp();
+  } catch (error) {
+    showAlert('login-alert', 'خطأ في تسجيل الدخول: ' + (error.message || 'تحقق من البيانات'));
+    btn.disabled = false;
+    btn.textContent = 'تسجيل الدخول';
+  }
+});
+
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => navigateTo(item.dataset.page));
+});
+
+// بدء التطبيق
+init();
+</script>
 </body>
 </html>
