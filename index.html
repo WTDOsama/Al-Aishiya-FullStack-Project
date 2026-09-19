@@ -4,100 +4,73 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>نظام إدارة طلبة مدرسة العائشية - دير البلح</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Arial, sans-serif; }
-body { background: #f5f7fa; color: #333; min-height: 100vh; }
-:root { --primary: #0d9488; --primary-dark: #0f766e; --danger: #dc2626; --success: #10b981; --warning: #f59e0b; --bg: #f5f7fa; --card: #fff; --text: #1f2937; --border: #e5e7eb; }
+body { background: #f5f7fa; color: #333; }
 .hidden { display: none !important; }
 
-/* Loading Screen */
+/* شاشة التحميل */
 #loading-screen { position: fixed; inset: 0; background: #f5f7fa; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; }
-.logo-circle { width: 100px; height: 100px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; border: 4px solid #fbbf24; }
+.logo-circle { width: 100px; height: 100px; background: #0d9488; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; border: 4px solid #fbbf24; }
 .logo-circle svg { width: 60px; height: 60px; fill: white; }
-.spinner { width: 40px; height: 40px; border: 4px solid #e5e7eb; border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin-top: 20px; }
+.spinner { width: 40px; height: 40px; border: 4px solid #e5e7eb; border-top-color: #0d9488; border-radius: 50%; animation: spin 1s linear infinite; margin-top: 20px; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* Login */
+/* تسجيل الدخول */
 .login-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%); padding: 20px; }
 .login-box { background: white; border-radius: 20px; padding: 40px; width: 100%; max-width: 420px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
-.login-box h1 { text-align: center; color: var(--primary); margin-bottom: 10px; font-size: 22px; }
+.login-box h1 { text-align: center; color: #0d9488; margin-bottom: 10px; font-size: 22px; }
 .login-box p { text-align: center; color: #666; margin-bottom: 30px; font-size: 14px; }
 .form-group { margin-bottom: 18px; }
 .form-group label { display: block; margin-bottom: 6px; font-weight: 600; color: #374151; font-size: 14px; }
-.form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 14px; border: 2px solid var(--border); border-radius: 10px; font-size: 15px; transition: border-color 0.2s; }
-.form-group input:focus, .form-group select:focus { outline: none; border-color: var(--primary); }
-.btn { padding: 12px 24px; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-.btn-primary { background: var(--primary); color: white; width: 100%; }
-.btn-primary:hover { background: var(--primary-dark); }
-.btn-secondary { background: #f3f4f6; color: #374151; }
-.btn-danger { background: var(--danger); color: white; }
-.btn-success { background: var(--success); color: white; }
+.form-group input { width: 100%; padding: 12px 14px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 15px; }
+.form-group input:focus { outline: none; border-color: #0d9488; }
+.btn { padding: 12px 24px; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; }
+.btn-primary { background: #0d9488; color: white; width: 100%; }
+.btn-primary:hover { background: #0f766e; }
 .alert { padding: 12px 16px; border-radius: 10px; margin-bottom: 15px; font-size: 14px; }
-.alert-error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
-.alert-success { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+.alert-error { background: #fee2e2; color: #991b1b; }
+.alert-success { background: #d1fae5; color: #065f46; }
 
-/* Main Layout */
+/* التطبيق الرئيسي */
 .app-container { display: flex; min-height: 100vh; }
-.sidebar { width: 260px; background: white; border-left: 1px solid var(--border); padding: 20px 0; position: fixed; right: 0; top: 0; bottom: 0; overflow-y: auto; }
-.sidebar-header { padding: 0 20px 20px; border-bottom: 1px solid var(--border); margin-bottom: 15px; }
-.sidebar-header h2 { color: var(--primary); font-size: 16px; }
-.sidebar-header p { color: #666; font-size: 12px; margin-top: 4px; }
+.sidebar { width: 260px; background: white; border-left: 1px solid #e5e7eb; padding: 20px 0; position: fixed; right: 0; top: 0; bottom: 0; overflow-y: auto; }
+.sidebar-header { padding: 0 20px 20px; border-bottom: 1px solid #e5e7eb; margin-bottom: 15px; }
+.sidebar-header h2 { color: #0d9488; font-size: 16px; }
 .nav-item { padding: 12px 20px; cursor: pointer; display: flex; align-items: center; gap: 10px; color: #4b5563; transition: all 0.2s; border-right: 3px solid transparent; }
 .nav-item:hover { background: #f3f4f6; }
-.nav-item.active { background: #f0fdfa; color: var(--primary); border-right-color: var(--primary); font-weight: 600; }
-.nav-item .icon { font-size: 18px; }
+.nav-item.active { background: #f0fdfa; color: #0d9488; border-right-color: #0d9488; font-weight: 600; }
 .main-content { flex: 1; margin-right: 260px; padding: 30px; }
 .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; background: white; padding: 15px 20px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
 .user-info { display: flex; align-items: center; gap: 10px; }
-.user-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+.user-avatar { width: 40px; height: 40px; border-radius: 50%; background: #0d9488; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; }
 
-/* Cards & Stats */
+/* البطاقات والإحصائيات */
 .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 18px; margin-bottom: 25px; }
-.stat-card { background: white; padding: 22px; border-radius: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-right: 4px solid var(--primary); }
+.stat-card { background: white; padding: 22px; border-radius: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-right: 4px solid #0d9488; }
 .stat-card .label { color: #6b7280; font-size: 13px; margin-bottom: 8px; }
-.stat-card .value { font-size: 28px; font-weight: bold; color: var(--text); }
-.stat-card.male { border-right-color: #3b82f6; }
-.stat-card.female { border-right-color: #ec4899; }
-.stat-card.warning { border-right-color: var(--warning); }
+.stat-card .value { font-size: 28px; font-weight: bold; color: #1f2937; }
 
-/* Tables */
+/* الجداول */
 .card { background: white; border-radius: 14px; padding: 22px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 20px; }
-.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 10px; }
-.card-header h3 { color: var(--text); font-size: 18px; }
+.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+.card-header h3 { color: #1f2937; font-size: 18px; }
 .table-container { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; }
-th, td { padding: 12px 14px; text-align: right; border-bottom: 1px solid var(--border); font-size: 14px; }
+th, td { padding: 12px 14px; text-align: right; border-bottom: 1px solid #e5e7eb; font-size: 14px; }
 th { background: #f9fafb; font-weight: 600; color: #374151; }
 tr:hover { background: #f9fafb; }
 .badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
 .badge-success { background: #d1fae5; color: #065f46; }
-.badge-danger { background: #fee2e2; color: #991b1b; }
 .badge-warning { background: #fef3c7; color: #92400e; }
-.badge-info { background: #dbeafe; color: #1e40af; }
 
 /* Modal */
 .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
 .modal { background: white; border-radius: 16px; padding: 30px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; }
 .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.modal-header h3 { color: var(--text); }
 .close-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: #6b7280; }
 .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
-
-/* Search & Filters */
-.toolbar { display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; }
-.search-box { flex: 1; min-width: 200px; position: relative; }
-.search-box input { width: 100%; padding: 10px 14px; border: 2px solid var(--border); border-radius: 10px; font-size: 14px; }
-.filter-select { padding: 10px 14px; border: 2px solid var(--border); border-radius: 10px; font-size: 14px; background: white; }
-
-/* Responsive */
-@media (max-width: 768px) {
-  .sidebar { transform: translateX(100%); transition: transform 0.3s; z-index: 100; }
-  .sidebar.open { transform: translateX(0); }
-  .main-content { margin-right: 0; padding: 15px; }
-  .stats-grid { grid-template-columns: repeat(2, 1fr); }
-}
 </style>
 </head>
 <body>
@@ -140,24 +113,21 @@ tr:hover { background: #f9fafb; }
 
 <!-- التطبيق الرئيسي -->
 <div id="app" class="app-container hidden">
-  <aside class="sidebar" id="sidebar">
+  <aside class="sidebar">
     <div class="sidebar-header">
       <h2>🏫 مدرسة العائشية</h2>
       <p id="user-role-display">مدير النظام</p>
     </div>
     <nav>
-      <div class="nav-item active" data-page="dashboard"><span class="icon">📊</span> لوحة التحكم</div>
-      <div class="nav-item" data-page="students"><span class="icon">‍🎓</span> الطلبة</div>
-      <div class="nav-item" data-page="guardians"><span class="icon">‍👩‍👧</span> أولياء الأمور</div>
-      <div class="nav-item" data-page="classes"><span class="icon">🏫</span> الصفوف</div>
-      <div class="nav-item" data-page="attendance"><span class="icon">📋</span> الحضور</div>
-      <div class="nav-item" data-page="performance"><span class="icon"></span> الأداء الأكاديمي</div>
-      <div class="nav-item" data-page="employees"><span class="icon">👔</span> الموظفون</div>
-      <div class="nav-item" data-page="workers"><span class="icon">🔧</span> العاملون</div>
-      <div class="nav-item" data-page="biscuit"><span class="icon">🍪</span> البسكويت</div>
-      <div class="nav-item" data-page="reports"><span class="icon"></span> التقارير</div>
-      <div class="nav-item" data-page="settings"><span class="icon">⚙️</span> الإعدادات</div>
-      <div class="nav-item" data-page="logout" style="margin-top:20px;color:var(--danger);"><span class="icon">🚪</span> تسجيل الخروج</div>
+      <div class="nav-item active" data-page="dashboard"><span>📊</span> لوحة التحكم</div>
+      <div class="nav-item" data-page="students"><span>👨‍🎓</span> الطلبة</div>
+      <div class="nav-item" data-page="guardians"><span>👨‍👩‍</span> أولياء الأمور</div>
+      <div class="nav-item" data-page="classes"><span>🏫</span> الصفوف</div>
+      <div class="nav-item" data-page="attendance"><span>📋</span> الحضور</div>
+      <div class="nav-item" data-page="employees"><span></span> الموظفون</div>
+      <div class="nav-item" data-page="workers"><span>🔧</span> العاملون</div>
+      <div class="nav-item" data-page="settings"><span>️</span> الإعدادات</div>
+      <div class="nav-item" data-page="logout" style="margin-top:20px;color:#dc2626;"><span></span> تسجيل الخروج</div>
     </nav>
   </aside>
   
@@ -179,28 +149,16 @@ tr:hover { background: #f9fafb; }
   </main>
 </div>
 
-<!-- Modal Container -->
+<!-- Modal -->
 <div id="modal-container"></div>
 
 <script>
 // ============================================
 // تهيئة Supabase
 // ============================================
-const SUPABASE_URL = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_URL) 
-  || localStorage.getItem('SUPABASE_URL') 
-  || 'https://YOUR_PROJECT.supabase.co';
-const SUPABASE_KEY = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SUPABASE_ANON_KEY) 
-  || localStorage.getItem('SUPABASE_KEY') 
-  || 'YOUR_ANON_KEY';
-
 let supabase;
-try {
-  supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
-    auth: { autoRefreshToken: true, persistSession: true }
-  });
-} catch(e) {
-  console.error('خطأ في تهيئة Supabase:', e);
-}
+let SUPABASE_URL = localStorage.getItem('SUPABASE_URL') || '';
+let SUPABASE_KEY = localStorage.getItem('SUPABASE_KEY') || '';
 
 // ============================================
 // حالة التطبيق
@@ -209,29 +167,16 @@ const state = {
   user: null,
   profile: null,
   currentPage: 'dashboard',
-  data: {
-    students: [],
-    guardians: [],
-    classes: [],
-    attendance: [],
-    performance: [],
-    employees: [],
-    workers: [],
-    biscuit: []
-  }
+  data: { students: [], guardians: [], classes: [], employees: [], workers: [] }
 };
 
 // ============================================
 // خدمات البيانات
 // ============================================
 const services = {
-  async getAll(table, filters = {}) {
+  async getAll(table) {
     try {
-      let query = supabase.from(table).select('*', { count: 'exact' });
-      if (filters.search && filters.searchField) {
-        query = query.ilike(filters.searchField, `%${filters.search}%`);
-      }
-      const { data, error, count } = await query.order('created_at', { ascending: false });
+      const { data, error, count } = await supabase.from(table).select('*', { count: 'exact' }).order('created_at', { ascending: false });
       if (error) throw error;
       return { success: true, data: data || [], total: count || 0 };
     } catch (error) {
@@ -342,7 +287,7 @@ function showModal(title, content, onSave) {
         </div>
         <div id="modal-content">${content}</div>
         <div class="modal-actions">
-          <button class="btn btn-secondary" onclick="closeModal()">إلغاء</button>
+          <button class="btn" style="background:#f3f4f6;" onclick="closeModal()">إلغاء</button>
           <button class="btn btn-primary" id="modal-save-btn">حفظ</button>
         </div>
       </div>
@@ -356,7 +301,7 @@ function closeModal() {
 }
 
 // ============================================
-// التنقل بين الصفحات
+// التنقل
 // ============================================
 function navigateTo(page) {
   state.currentPage = page;
@@ -366,9 +311,8 @@ function navigateTo(page) {
   
   const titles = {
     dashboard: 'لوحة التحكم', students: 'إدارة الطلبة', guardians: 'أولياء الأمور',
-    classes: 'الصفوف الدراسية', attendance: 'الحضور والغياب', performance: 'الأداء الأكاديمي',
-    employees: 'الموظفون', workers: 'العاملون', biscuit: 'مخزون البسكويت',
-    reports: 'التقارير', settings: 'الإعدادات'
+    classes: 'الصفوف الدراسية', attendance: 'الحضور والغياب',
+    employees: 'الموظفون', workers: 'العاملون', settings: 'الإعدادات'
   };
   document.getElementById('page-title').textContent = titles[page] || page;
   
@@ -377,18 +321,17 @@ function navigateTo(page) {
   
   const renderers = {
     dashboard: renderDashboard, students: renderStudents, guardians: renderGuardians,
-    classes: renderClasses, attendance: renderAttendance, performance: renderPerformance,
-    employees: renderEmployees, workers: renderWorkers, biscuit: renderBiscuit,
-    reports: renderReports, settings: renderSettings, logout: () => auth.logout()
+    classes: renderClasses, attendance: renderAttendance,
+    employees: renderEmployees, workers: renderWorkers,
+    settings: renderSettings, logout: () => auth.logout()
   };
   
   if (renderers[page]) renderers[page]();
 }
 
 // ============================================
-// صفحات التطبيق
+// الصفحات
 // ============================================
-
 async function renderDashboard() {
   const content = document.getElementById('page-content');
   try {
@@ -406,43 +349,20 @@ async function renderDashboard() {
     content.innerHTML = `
       <div class="stats-grid">
         <div class="stat-card"><div class="label">إجمالي الطلبة</div><div class="value">${studentsRes.total}</div></div>
-        <div class="stat-card male"><div class="label">الذكور</div><div class="value">${male}</div></div>
-        <div class="stat-card female"><div class="label">الإناث</div><div class="value">${female}</div></div>
+        <div class="stat-card" style="border-right-color:#3b82f6;"><div class="label">الذكور</div><div class="value">${male}</div></div>
+        <div class="stat-card" style="border-right-color:#ec4899;"><div class="label">الإناث</div><div class="value">${female}</div></div>
         <div class="stat-card"><div class="label">الصفوف</div><div class="value">${classesRes.total}</div></div>
         <div class="stat-card"><div class="label">الموظفون</div><div class="value">${employeesRes.total}</div></div>
         <div class="stat-card"><div class="label">العاملون</div><div class="value">${workersRes.total}</div></div>
       </div>
       <div class="card">
-        <div class="card-header"><h3>📊 توزيع الطلبة حسب المرحلة</h3></div>
-        <div style="height:300px;"><canvas id="stageChart"></canvas></div>
-      </div>
-      <div class="card">
-        <div class="card-header"><h3>🎯 آخر النشاطات</h3></div>
-        <p style="color:#666;text-align:center;padding:20px;">لا توجد نشاطات مسجلة بعد. ابدأ بإضافة طالب جديد!</p>
+        <div class="card-header"><h3> مرحباً بك في نظام إدارة طلبة مدرسة العائشية</h3></div>
+        <p style="color:#666;padding:20px;text-align:center;">
+          استخدم القائمة الجانبية للتنقل بين الأقسام المختلفة.<br>
+          لإضافة بيانات، تأكد من إعداد قاعدة البيانات أولاً.
+        </p>
       </div>
     `;
-    
-    // رسم بياني
-    setTimeout(() => {
-      const ctx = document.getElementById('stageChart');
-      if (ctx && window.Chart) {
-        new Chart(ctx, {
-          type: 'doughnut',
-          data: {
-            labels: ['ابتدائي', 'إعدادي', 'ثانوي'],
-            datasets: [{
-              data: [
-                students.filter(s => s.stage === 'ابتدائي').length,
-                students.filter(s => s.stage === 'إعدادي').length,
-                students.filter(s => s.stage === 'ثانوي').length
-              ],
-              backgroundColor: ['#0d9488', '#3b82f6', '#f59e0b']
-            }]
-          },
-          options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
-        });
-      }
-    }, 100);
   } catch (error) {
     content.innerHTML = `<div class="card"><div class="alert alert-error">خطأ في تحميل البيانات: ${error.message}</div></div>`;
   }
@@ -456,27 +376,14 @@ async function renderStudents() {
   content.innerHTML = `
     <div class="card">
       <div class="card-header">
-        <h3>👨‍🎓 قائمة الطلبة (${res.total})</h3>
+        <h3>👨🎓 قائمة الطلبة (${res.total})</h3>
         <button class="btn btn-primary" onclick="showStudentForm()" style="width:auto;">+ إضافة طالب</button>
-      </div>
-      <div class="toolbar">
-        <div class="search-box">
-          <input type="text" id="student-search" placeholder="🔍 بحث بالاسم أو رقم الملف..." oninput="filterStudents()">
-        </div>
-        <select class="filter-select" id="stage-filter" onchange="filterStudents()">
-          <option value="">كل المراحل</option>
-          <option>ابتدائي</option><option>إعدادي</option><option>ثانوي</option>
-        </select>
-        <select class="filter-select" id="gender-filter" onchange="filterStudents()">
-          <option value="">كل الجنسين</option>
-          <option>ذكر</option><option>أنثى</option>
-        </select>
       </div>
       <div class="table-container">
         <table>
           <thead><tr><th>رقم الملف</th><th>الاسم</th><th>الجنس</th><th>المرحلة</th><th>الصف</th><th>الحالة</th><th>إجراءات</th></tr></thead>
-          <tbody id="students-tbody">
-            ${students.length === 0 ? '<tr><td colspan="7" style="text-align:center;color:#666;">لا يوجد طلبة. اضغط "إضافة طالب" للبدء.</td></tr>' : ''}
+          <tbody>
+            ${students.length === 0 ? '<tr><td colspan="7" style="text-align:center;color:#666;padding:40px;">لا يوجد طلبة. اضغط "إضافة طالب" للبدء.</td></tr>' : ''}
             ${students.map(s => `
               <tr>
                 <td>${s.file_number || '-'}</td>
@@ -486,8 +393,8 @@ async function renderStudents() {
                 <td>${s.grade || '-'} ${s.section || ''}</td>
                 <td><span class="badge badge-${s.status === 'نشط' ? 'success' : 'warning'}">${s.status || 'نشط'}</span></td>
                 <td>
-                  <button class="btn btn-secondary" style="padding:6px 12px;font-size:12px;" onclick="showStudentForm('${s.id}')">تعديل</button>
-                  <button class="btn btn-danger" style="padding:6px 12px;font-size:12px;" onclick="deleteStudent('${s.id}')">حذف</button>
+                  <button class="btn" style="padding:6px 12px;font-size:12px;background:#f3f4f6;" onclick="showStudentForm('${s.id}')">تعديل</button>
+                  <button class="btn" style="padding:6px 12px;font-size:12px;background:#dc2626;color:white;" onclick="deleteStudent('${s.id}')">حذف</button>
                 </td>
               </tr>
             `).join('')}
@@ -499,55 +406,17 @@ async function renderStudents() {
   state.data.students = students;
 }
 
-function filterStudents() {
-  const search = document.getElementById('student-search').value.toLowerCase();
-  const stage = document.getElementById('stage-filter').value;
-  const gender = document.getElementById('gender-filter').value;
-  
-  const filtered = state.data.students.filter(s => {
-    const matchSearch = !search || (s.full_name || '').toLowerCase().includes(search) || (s.file_number || '').includes(search);
-    const matchStage = !stage || s.stage === stage;
-    const matchGender = !gender || s.gender === gender;
-    return matchSearch && matchStage && matchGender;
-  });
-  
-  const tbody = document.getElementById('students-tbody');
-  tbody.innerHTML = filtered.length === 0 
-    ? '<tr><td colspan="7" style="text-align:center;color:#666;">لا توجد نتائج</td></tr>'
-    : filtered.map(s => `
-      <tr>
-        <td>${s.file_number || '-'}</td>
-        <td><strong>${s.full_name || '-'}</strong></td>
-        <td>${s.gender || '-'}</td>
-        <td>${s.stage || '-'}</td>
-        <td>${s.grade || '-'} ${s.section || ''}</td>
-        <td><span class="badge badge-${s.status === 'نشط' ? 'success' : 'warning'}">${s.status || 'نشط'}</span></td>
-        <td>
-          <button class="btn btn-secondary" style="padding:6px 12px;font-size:12px;" onclick="showStudentForm('${s.id}')">تعديل</button>
-          <button class="btn btn-danger" style="padding:6px 12px;font-size:12px;" onclick="deleteStudent('${s.id}')">حذف</button>
-        </td>
-      </tr>
-    `).join('');
-}
-
 function showStudentForm(id = null) {
   const student = id ? state.data.students.find(s => s.id === id) : {};
   const content = `
     <div class="form-group"><label>رقم الملف *</label><input id="s-file" value="${student.file_number || ''}" required></div>
     <div class="form-group"><label>الاسم الكامل *</label><input id="s-name" value="${student.full_name || ''}" required></div>
-    <div class="form-group"><label>الجنس *</label>
-      <select id="s-gender"><option ${student.gender === 'ذكر' ? 'selected' : ''}>ذكر</option><option ${student.gender === 'أنثى' ? 'selected' : ''}>أنثى</option></select>
-    </div>
-    <div class="form-group"><label>المرحلة *</label>
-      <select id="s-stage"><option ${student.stage === 'ابتدائي' ? 'selected' : ''}>ابتدائي</option><option ${student.stage === 'إعدادي' ? 'selected' : ''}>إعدادي</option><option ${student.stage === 'ثانوي' ? 'selected' : ''}>ثانوي</option></select>
-    </div>
+    <div class="form-group"><label>الجنس *</label><select id="s-gender"><option ${student.gender === 'ذكر' ? 'selected' : ''}>ذكر</option><option ${student.gender === 'أنثى' ? 'selected' : ''}>أنثى</option></select></div>
+    <div class="form-group"><label>المرحلة *</label><select id="s-stage"><option ${student.stage === 'ابتدائي' ? 'selected' : ''}>ابتدائي</option><option ${student.stage === 'إعدادي' ? 'selected' : ''}>إعدادي</option><option ${student.stage === 'ثانوي' ? 'selected' : ''}>ثانوي</option></select></div>
     <div class="form-group"><label>الصف</label><input id="s-grade" value="${student.grade || ''}"></div>
     <div class="form-group"><label>الشعبة</label><input id="s-section" value="${student.section || ''}"></div>
     <div class="form-group"><label>الهاتف</label><input id="s-phone" value="${student.phone || ''}"></div>
-    <div class="form-group"><label>العنوان</label><input id="s-address" value="${student.address || ''}"></div>
-    <div class="form-group"><label>الحالة</label>
-      <select id="s-status"><option ${student.status === 'نشط' ? 'selected' : ''}>نشط</option><option ${student.status === 'متوقف' ? 'selected' : ''}>متوقف</option><option ${student.status === 'منقول' ? 'selected' : ''}>منقول</option></select>
-    </div>
+    <div class="form-group"><label>الحالة</label><select id="s-status"><option ${student.status === 'نشط' ? 'selected' : ''}>نشط</option><option ${student.status === 'متوقف' ? 'selected' : ''}>متوقف</option></select></div>
   `;
   
   showModal(id ? 'تعديل بيانات طالب' : 'إضافة طالب جديد', content, async () => {
@@ -559,7 +428,6 @@ function showStudentForm(id = null) {
       grade: document.getElementById('s-grade').value,
       section: document.getElementById('s-section').value,
       phone: document.getElementById('s-phone').value,
-      address: document.getElementById('s-address').value,
       status: document.getElementById('s-status').value
     };
     
@@ -582,7 +450,7 @@ async function deleteStudent(id) {
   if (!confirm('هل أنت متأكد من حذف هذا الطالب؟')) return;
   const res = await services.delete('students', id);
   if (res.success) renderStudents();
-  else alert('خطأ في الحذف: ' + (res.error?.message || ''));
+  else alert('خطأ في الحذف');
 }
 
 async function renderGuardians() {
@@ -590,16 +458,13 @@ async function renderGuardians() {
   const guardians = res.data || [];
   document.getElementById('page-content').innerHTML = `
     <div class="card">
-      <div class="card-header">
-        <h3>👨‍👩‍👧 أولياء الأمور (${res.total})</h3>
-        <button class="btn btn-primary" style="width:auto;" onclick="alert('قيد التطوير')">+ إضافة ولي أمر</button>
-      </div>
+      <div class="card-header"><h3>👨‍👩‍👧 أولياء الأمور (${res.total})</h3></div>
       <div class="table-container">
         <table>
-          <thead><tr><th>الاسم</th><th>الصلة</th><th>الهاتف</th><th>العنوان</th></tr></thead>
+          <thead><tr><th>الاسم</th><th>الصلة</th><th>الهاتف</th></tr></thead>
           <tbody>
-            ${guardians.length === 0 ? '<tr><td colspan="4" style="text-align:center;color:#666;">لا يوجد أولياء أمور</td></tr>' : ''}
-            ${guardians.map(g => `<tr><td><strong>${g.full_name}</strong></td><td>${g.relation || '-'}</td><td>${g.phone || '-'}</td><td>${g.address || '-'}</td></tr>`).join('')}
+            ${guardians.length === 0 ? '<tr><td colspan="3" style="text-align:center;color:#666;padding:40px;">لا يوجد أولياء أمور</td></tr>' : ''}
+            ${guardians.map(g => `<tr><td><strong>${g.full_name}</strong></td><td>${g.relation || '-'}</td><td>${g.phone || '-'}</td></tr>`).join('')}
           </tbody>
         </table>
       </div>
@@ -615,10 +480,10 @@ async function renderClasses() {
       <div class="card-header"><h3>🏫 الصفوف الدراسية (${res.total})</h3></div>
       <div class="table-container">
         <table>
-          <thead><tr><th>المرحلة</th><th>الصف</th><th>الشعبة</th><th>العام الدراسي</th><th>السعة</th></tr></thead>
+          <thead><tr><th>المرحلة</th><th>الصف</th><th>الشعبة</th><th>السعة</th></tr></thead>
           <tbody>
-            ${classes.length === 0 ? '<tr><td colspan="5" style="text-align:center;color:#666;">لا توجد صفوف</td></tr>' : ''}
-            ${classes.map(c => `<tr><td>${c.stage}</td><td>${c.grade}</td><td>${c.section}</td><td>${c.academic_year || '-'}</td><td>${c.capacity || 40}</td></tr>`).join('')}
+            ${classes.length === 0 ? '<tr><td colspan="4" style="text-align:center;color:#666;padding:40px;">لا توجد صفوف</td></tr>' : ''}
+            ${classes.map(c => `<tr><td>${c.stage}</td><td>${c.grade}</td><td>${c.section}</td><td>${c.capacity || 40}</td></tr>`).join('')}
           </tbody>
         </table>
       </div>
@@ -629,17 +494,8 @@ async function renderClasses() {
 async function renderAttendance() {
   document.getElementById('page-content').innerHTML = `
     <div class="card">
-      <div class="card-header"><h3> الحضور والغياب</h3></div>
-      <p style="text-align:center;color:#666;padding:40px;"> هذه الصفحة قيد التطوير - سيتم تفعيلها قريباً</p>
-    </div>
-  `;
-}
-
-async function renderPerformance() {
-  document.getElementById('page-content').innerHTML = `
-    <div class="card">
-      <div class="card-header"><h3> الأداء الأكاديمي</h3></div>
-      <p style="text-align:center;color:#666;padding:40px;"> هذه الصفحة قيد التطوير - سيتم تفعيلها قريباً</p>
+      <div class="card-header"><h3>📋 الحضور والغياب</h3></div>
+      <p style="text-align:center;color:#666;padding:40px;">🚧 قيد التطوير</p>
     </div>
   `;
 }
@@ -652,10 +508,10 @@ async function renderEmployees() {
       <div class="card-header"><h3>👔 الموظفون (${res.total})</h3></div>
       <div class="table-container">
         <table>
-          <thead><tr><th>الاسم</th><th>المنصب</th><th>القسم</th><th>الهاتف</th><th>الحالة</th></tr></thead>
+          <thead><tr><th>الاسم</th><th>المنصب</th><th>القسم</th><th>الهاتف</th></tr></thead>
           <tbody>
-            ${employees.length === 0 ? '<tr><td colspan="5" style="text-align:center;color:#666;">لا يوجد موظفون</td></tr>' : ''}
-            ${employees.map(e => `<tr><td><strong>${e.full_name}</strong></td><td>${e.position || '-'}</td><td>${e.department || '-'}</td><td>${e.phone || '-'}</td><td><span class="badge badge-success">${e.status || 'نشط'}</span></td></tr>`).join('')}
+            ${employees.length === 0 ? '<tr><td colspan="4" style="text-align:center;color:#666;padding:40px;">لا يوجد موظفون</td></tr>' : ''}
+            ${employees.map(e => `<tr><td><strong>${e.full_name}</strong></td><td>${e.position || '-'}</td><td>${e.department || '-'}</td><td>${e.phone || '-'}</td></tr>`).join('')}
           </tbody>
         </table>
       </div>
@@ -668,34 +524,16 @@ async function renderWorkers() {
   const workers = res.data || [];
   document.getElementById('page-content').innerHTML = `
     <div class="card">
-      <div class="card-header"><h3> العاملون (${res.total})</h3></div>
+      <div class="card-header"><h3>🔧 العاملون (${res.total})</h3></div>
       <div class="table-container">
         <table>
-          <thead><tr><th>الاسم</th><th>المنصب</th><th>الهاتف</th><th>الفترة</th></tr></thead>
+          <thead><tr><th>الاسم</th><th>المنصب</th><th>الهاتف</th></tr></thead>
           <tbody>
-            ${workers.length === 0 ? '<tr><td colspan="4" style="text-align:center;color:#666;">لا يوجد عاملون</td></tr>' : ''}
-            ${workers.map(w => `<tr><td><strong>${w.full_name}</strong></td><td>${w.position || '-'}</td><td>${w.phone || '-'}</td><td>${w.work_period || '-'}</td></tr>`).join('')}
+            ${workers.length === 0 ? '<tr><td colspan="3" style="text-align:center;color:#666;padding:40px;">لا يوجد عاملون</td></tr>' : ''}
+            ${workers.map(w => `<tr><td><strong>${w.full_name}</strong></td><td>${w.position || '-'}</td><td>${w.phone || '-'}</td></tr>`).join('')}
           </tbody>
         </table>
       </div>
-    </div>
-  `;
-}
-
-async function renderBiscuit() {
-  document.getElementById('page-content').innerHTML = `
-    <div class="card">
-      <div class="card-header"><h3>🍪 مخزون البسكويت</h3></div>
-      <p style="text-align:center;color:#666;padding:40px;">🚧 هذه الصفحة قيد التطوير</p>
-    </div>
-  `;
-}
-
-async function renderReports() {
-  document.getElementById('page-content').innerHTML = `
-    <div class="card">
-      <div class="card-header"><h3>📄 التقارير</h3></div>
-      <p style="text-align:center;color:#666;padding:40px;">🚧 هذه الصفحة قيد التطوير</p>
     </div>
   `;
 }
@@ -705,15 +543,13 @@ async function renderSettings() {
     <div class="card">
       <div class="card-header"><h3>⚙️ الإعدادات</h3></div>
       <div style="padding:20px;">
-        <h4 style="margin-bottom:15px;">معلومات الحساب</h4>
-        <p><strong>الاسم:</strong> ${state.profile?.full_name || '-'}</p>
-        <p><strong>البريد:</strong> ${state.user?.email || '-'}</p>
-        <p><strong>الدور:</strong> ${getRoleName(state.profile?.role)}</p>
-        <hr style="margin:20px 0;">
         <h4 style="margin-bottom:15px;">إعدادات Supabase</h4>
-        <div class="form-group"><label>Supabase URL</label><input id="cfg-url" value="${SUPABASE_URL}"></div>
-        <div class="form-group"><label>Supabase Anon Key</label><input id="cfg-key" value="${SUPABASE_KEY}" type="password"></div>
+        <div class="form-group"><label>Supabase URL</label><input id="cfg-url" value="${SUPABASE_URL}" placeholder="https://xxxxx.supabase.co"></div>
+        <div class="form-group"><label>Supabase Anon Key</label><input id="cfg-key" value="${SUPABASE_KEY}" placeholder="eyJ..." type="password"></div>
         <button class="btn btn-primary" style="width:auto;" onclick="saveSettings()">حفظ الإعدادات</button>
+        <p style="margin-top:15px;color:#666;font-size:13px;">
+          احصل على هذه البيانات من: supabase.com → Project Settings → API
+        </p>
       </div>
     </div>
   `;
@@ -722,9 +558,10 @@ async function renderSettings() {
 function saveSettings() {
   const url = document.getElementById('cfg-url').value;
   const key = document.getElementById('cfg-key').value;
+  if (!url || !key) { alert('يرجى ملء جميع الحقول'); return; }
   localStorage.setItem('SUPABASE_URL', url);
   localStorage.setItem('SUPABASE_KEY', key);
-  alert('تم حفظ الإعدادات. يرجى إعادة تحميل الصفحة.');
+  alert('تم حفظ الإعدادات. سيتم إعادة تحميل الصفحة...');
   location.reload();
 }
 
@@ -734,14 +571,17 @@ function saveSettings() {
 async function init() {
   showLoading();
   
-  // التحقق من Supabase
-  if (SUPABASE_URL.includes('YOUR_PROJECT') || SUPABASE_KEY.includes('YOUR_ANON_KEY')) {
+  // التحقق من وجود إعدادات Supabase
+  if (!SUPABASE_URL || !SUPABASE_KEY) {
     document.getElementById('loading-screen').innerHTML = `
       <div style="text-align:center;padding:40px;max-width:600px;">
-        <h2 style="color:#dc2626;margin-bottom:20px;">⚠️ لم يتم إعداد Supabase</h2>
-        <p style="color:#666;margin-bottom:20px;">يرجى إضافة بيانات Supabase في الإعدادات:</p>
+        <div class="logo-circle" style="margin:0 auto 20px;">
+          <svg viewBox="0 0 24 24" style="width:60px;height:60px;fill:white;"><path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3z"/></svg>
+        </div>
+        <h2 style="color:#0d9488;margin-bottom:20px;">⚙️ إعداد النظام</h2>
+        <p style="color:#666;margin-bottom:20px;">يرجى إدخال بيانات Supabase للبدء:</p>
         <div class="form-group"><label>Supabase URL</label><input id="init-url" placeholder="https://xxxxx.supabase.co"></div>
-        <div class="form-group"><label>Anon Key</label><input id="init-key" placeholder="eyJ..."></div>
+        <div class="form-group"><label>Supabase Anon Key</label><input id="init-key" placeholder="eyJ..." type="password"></div>
         <button class="btn btn-primary" onclick="saveInitSettings()">حفظ والمتابعة</button>
         <p style="margin-top:20px;font-size:13px;color:#999;">
           احصل على هذه البيانات من: supabase.com → Project Settings → API
@@ -751,7 +591,12 @@ async function init() {
     return;
   }
   
+  // تهيئة Supabase
   try {
+    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+      auth: { autoRefreshToken: true, persistSession: true }
+    });
+    
     const user = await auth.getCurrentUser();
     if (user) {
       state.user = user;
@@ -762,7 +607,13 @@ async function init() {
     }
   } catch (error) {
     console.error('خطأ في التهيئة:', error);
-    showLogin();
+    document.getElementById('loading-screen').innerHTML = `
+      <div style="text-align:center;padding:40px;max-width:600px;">
+        <h2 style="color:#dc2626;margin-bottom:20px;">❌ خطأ في الاتصال</h2>
+        <p style="color:#666;margin-bottom:20px;">تعذر الاتصال بـ Supabase. تحقق من الإعدادات:</p>
+        <button class="btn btn-primary" onclick="localStorage.removeItem('SUPABASE_URL');localStorage.removeItem('SUPABASE_KEY');location.reload();">إعادة تعيين الإعدادات</button>
+      </div>
+    `;
   }
 }
 
